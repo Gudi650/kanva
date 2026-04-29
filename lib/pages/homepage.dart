@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/navigationBar.dart';
+import '../widgets/products.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -9,12 +10,26 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+
+  //list of the scrollable categories
+  final List<String> categories = [
+    'All Items',
+    'Latest',
+    'Men',
+    'Women',
+    'Kids',
+    'Accesories'
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,90 +107,39 @@ class _HomepageState extends State<Homepage> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              
-              Container(
-                height: 40,
-                width: 100,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('All Items', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 120,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('Latest Arrival', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 100,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('Men', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 100,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('Women', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 100,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('Kids', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 100,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Center(
-                  child: Text('Accessories', style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+              ...categories.map((category) => 
+                Container(
+                  height: 40,
+                  width: 100,
+                  margin: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(85, 101, 175, 1.0),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: Center(
+                    child: Text(category, style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+                  ),
                 ),
               ),
             ],
           ),
         ),
           
+        SizedBox(height: 10.0),
 
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0,),
+          child: Text("Products", 
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua', color: Colors.black)
+          ),
+        ),
+
+        SizedBox(height: 10.0),
+
+        //cards for the products
+        const Products(),
         
+
         
       ]),
         ),
