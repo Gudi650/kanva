@@ -21,6 +21,10 @@ class _HomepageState extends State<Homepage> {
     'Accesories'
   ];
 
+  //selected category index
+  int selectedCategoryIndex = 0;
+  String selectedCategory = 'All Items';
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,17 +111,29 @@ class _HomepageState extends State<Homepage> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+
               ...categories.map((category) => 
-                Container(
-                  height: 40,
-                  width: 100,
-                  margin: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(85, 101, 175, 1.0),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: Center(
-                    child: Text(category, style: TextStyle(color: Colors.white, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedCategoryIndex = categories.indexOf(category);
+                      selectedCategory = category;
+                    });
+
+                    //print('$selectedCategoryIndex');
+                  },
+                  child: Container(
+                    height: 36,
+                    width: 100,
+                    margin: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: selectedCategoryIndex == categories.indexOf(category) ? Color.fromRGBO(85, 101, 175, 1.0) : Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(color: Colors.black, width:  0.1),
+                    ),
+                    child: Center(
+                      child: Text(category, style: TextStyle(color: selectedCategoryIndex == categories.indexOf(category) ? Colors.white : Colors.black, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+                    ),
                   ),
                 ),
               ),
@@ -129,7 +145,7 @@ class _HomepageState extends State<Homepage> {
 
         Padding(
           padding: const EdgeInsets.only(left: 12.0,),
-          child: Text("Products", 
+          child: Text("$selectedCategory Collections", 
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua', color: Colors.black)
           ),
         ),

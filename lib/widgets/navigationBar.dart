@@ -39,29 +39,6 @@ class _NavigationState extends State<Navigation> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              /*
-              Container(
-                height: 48,
-                width: 102,
-                margin: const EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  //shape: BoxShape.circle,
-                    borderRadius: BorderRadius.circular(40.0),
-                  color: Color.fromRGBO(85, 101, 175, 1.0),
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.home, color: Colors.white),
-                      SizedBox(width: 4),
-                      Text('Home', style: TextStyle(color: Colors.white, fontSize: 16.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
-                    ],
-                  ),
-                ),
-              ),
-              */
-
               //map through the list of icons and display them in the navigation bar
               ...navItems.map((item) {
                 return GestureDetector(
