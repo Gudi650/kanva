@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/navigationBar.dart';
 import '../widgets/products.dart';
+import 'package:untitled1/pages/profile.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -38,17 +39,34 @@ class _HomepageState extends State<Homepage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 48,
-              width: 48,
-              margin: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromRGBO(85, 101, 175, 1.0),
+
+            //profile icons
+            GestureDetector(
+
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Profile()),
+                );
+
+              },
+
+              child: Container(
+                height: 48,
+                width: 48,
+                margin: const EdgeInsets.all(12.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color.fromRGBO(85, 101, 175, 1.0),
+                ),
+                child: const Icon(Icons.account_circle, color: Colors.white),
               ),
-              child: const Icon(Icons.account_circle, color: Colors.white),
             ),
+
+            //kanva text in the middle of the appbar
             Text('Kanva', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua', color: Color.fromRGBO(85, 101, 175, 1.0))),
+
+            //notification icons 
             Container(
               height: 48,
               width: 48,
@@ -59,6 +77,7 @@ class _HomepageState extends State<Homepage> {
               ),
               child: const Icon(Icons.notification_add, color: Colors.white),
             ),
+
           ],
         ),
 
