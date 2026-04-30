@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -21,14 +22,13 @@ class _SigninState extends State<Signin> {
             padding: const EdgeInsets.only(top: 20),
             child: Column(
               children: [
-                const Text(
+                Text(
                   'Kanva',
-                  style: TextStyle(
-                    fontSize: 44.0,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(255, 251, 205, 1),
-                    fontFamily: 'Inknut Antiqua',
-                    letterSpacing: 4.0,
+                  style: GoogleFonts.inknutAntiqua(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.w300,
+                    color: const Color.fromRGBO(255, 251, 205, 1),
+                    letterSpacing: 2.0,
                   ),
                 ),
 
@@ -65,8 +65,11 @@ class _SigninState extends State<Signin> {
                         children: [
                           const SizedBox(height: 8.0),
                           Text(
-                            'Welcome Back',
-                            style: TextStyle(fontSize: 20, letterSpacing: 4),
+                            'Welcome back',
+                            style: GoogleFonts.inknutAntiqua(
+                              fontSize: 20, 
+                              letterSpacing: 2
+                            ),
                           ),
 
                           const SizedBox(height: 20.0),
@@ -78,9 +81,10 @@ class _SigninState extends State<Signin> {
                               children: [
                                 Text(
                                   'Email',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inknutAntiqua(
                                     fontSize: 16,
                                     color: Colors.black,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ],
@@ -91,7 +95,12 @@ class _SigninState extends State<Signin> {
 
                           TextField(
                             decoration: InputDecoration(
-                              labelText: 'example@gmail.com',
+                              hintText: 'example@gmail.com',
+                              hintStyle: GoogleFonts.inknutAntiqua(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                              ),
 
                               prefixIcon: Padding(
                                 padding: const EdgeInsets.only(
@@ -121,9 +130,10 @@ class _SigninState extends State<Signin> {
                               children: [
                                 Text(
                                   'Password',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inknutAntiqua(
                                     fontSize: 16,
                                     color: Colors.black,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ],
@@ -134,7 +144,12 @@ class _SigninState extends State<Signin> {
 
                           TextField(
                             decoration: InputDecoration(
-                              labelText: 'password123',
+                              hintText: 'password123',
+                              hintStyle: GoogleFonts.inknutAntiqua(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                              ),
 
                               suffixIcon: Padding(
                                 padding: const EdgeInsets.only(right: 12.0),
@@ -193,9 +208,9 @@ class _SigninState extends State<Signin> {
                                     onPressed: () {},
                                     child: Text(
                                       'Remember Me',
-                                      style: TextStyle(
+                                      style: GoogleFonts.inknutAntiqua(
                                         color: Colors.black,
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.normal,
                                       ),
                                     ),
@@ -207,9 +222,9 @@ class _SigninState extends State<Signin> {
                                 onPressed: () {},
                                 child: Text(
                                   'Forgot Password?',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inknutAntiqua(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -240,11 +255,11 @@ class _SigninState extends State<Signin> {
                               ),
                               child: Text(
                                 'Login',
-                                style: TextStyle(
+                                style: GoogleFonts.inknutAntiqua(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,
-                                  letterSpacing: 4,
+                                  letterSpacing: 2,
                                 ),
                               ),
                             ),
@@ -266,7 +281,7 @@ class _SigninState extends State<Signin> {
                                 ),
                                 child: Text(
                                   "or Login with",
-                                  style: TextStyle(
+                                  style: GoogleFonts.inknutAntiqua(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 2,
@@ -344,9 +359,9 @@ class _SigninState extends State<Signin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Dont have an account ?', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400,letterSpacing: 1),),
+                              Text('Dont have an account ?', style: GoogleFonts.inknutAntiqua(fontSize: 14, fontWeight: FontWeight.w400,letterSpacing: 1),),
                               const SizedBox(width: 4.0),
-                              Text('Sign Up', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, letterSpacing: 1),),
+                              Text('Sign Up', style: GoogleFonts.inknutAntiqua(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 1,),),
                             ],
                           ),
                         ],
@@ -356,7 +371,7 @@ class _SigninState extends State<Signin> {
                   ),
                 ),
               ],
-            ),
+             )
           ),
         ),
       ),
