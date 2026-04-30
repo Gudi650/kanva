@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/navigationBar.dart';
 import '../widgets/products.dart';
 import 'package:untitled1/pages/profile.dart';
@@ -49,8 +50,6 @@ class _HomepageState extends State<Homepage> {
                   MaterialPageRoute(builder: (context) => const Profile()),
                 );
 
-                
-
               },
 
               child: Container(
@@ -66,7 +65,7 @@ class _HomepageState extends State<Homepage> {
             ),
 
             //kanva text in the middle of the appbar
-            Text('Kanva', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua', color: Color.fromRGBO(85, 101, 175, 1.0))),
+            Text('Kanva', style: GoogleFonts.inknutAntiqua(fontSize: 24.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, color: Color.fromRGBO(85, 101, 175, 1.0))),
 
             //notification icons 
             Container(
@@ -91,7 +90,7 @@ class _HomepageState extends State<Homepage> {
           child: TextField(
               decoration: InputDecoration(
                 labelText: "Search ",
-                labelStyle: TextStyle(color: Colors.grey[600], fontSize: 16.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua'),
+                labelStyle: GoogleFonts.inknutAntiqua(color: Colors.grey[600], fontSize: 16.0, letterSpacing: 2.0,),
                 //hintText: "Type something...",
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 40.0, right: 8),
@@ -153,7 +152,7 @@ class _HomepageState extends State<Homepage> {
                       border: Border.all(color: Colors.black, width:  0.1),
                     ),
                     child: Center(
-                      child: Text(category, style: TextStyle(color: selectedCategoryIndex == categories.indexOf(category) ? Colors.white : Colors.black, fontSize: 14.0, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+                      child: Text(category, style: GoogleFonts.inknutAntiqua(color: selectedCategoryIndex == categories.indexOf(category) ? Colors.white : Colors.black, fontSize: 14.0, letterSpacing: 2.0, )),
                     ),
                   ),
                 ),
@@ -164,10 +163,11 @@ class _HomepageState extends State<Homepage> {
           
         SizedBox(height: 10.0),
 
+        //the name being displayed
         Padding(
           padding: const EdgeInsets.only(left: 12.0,),
           child: Text("$selectedCategory Collections", 
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua', color: Colors.black)
+            style: GoogleFonts.inknutAntiqua(fontSize: 18.0, fontWeight: FontWeight.bold, letterSpacing: 2.0,  color: Colors.black)
           ),
         ),
 

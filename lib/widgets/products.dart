@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -96,13 +97,13 @@ class _ProductsState extends State<Products> {
 
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0, top: 8.0, bottom: 8.0),
-                  child: Text(products[index]['name']!, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 2.0, fontFamily: 'Inknut Antiqua')),
+                  child: Text(products[index]['name']!, style: GoogleFonts.inknutAntiqua(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 2.0)),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      Text(products[index]['store']!, style: TextStyle(fontSize: 16.0, color: Colors.white, fontFamily: 'Inknut Antiqua')),
+                      Text(products[index]['store']!, style: GoogleFonts.inknutAntiqua(fontSize: 16.0, color: Colors.white)),
                       SizedBox(width: 108.0),
                       Icon(Icons.store, color: Colors.white, size: 24.0),
                     ],
@@ -112,7 +113,7 @@ class _ProductsState extends State<Products> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      Text(products[index]['price']!, style: TextStyle(fontSize: 12.0, color: Colors.white, fontFamily: 'Inknut Antiqua')),
+                      Text(products[index]['price']!, style: GoogleFonts.inknutAntiqua(fontSize: 12.0, color: Colors.white)),
                       SizedBox(width: 104.0),
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
