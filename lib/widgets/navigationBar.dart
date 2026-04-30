@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/pages/categories.dart';
 import 'package:untitled1/pages/homepage.dart';
-import 'package:untitled1/pages/profile.dart';
+//import 'package:untitled1/pages/profile.dart';
 import 'package:untitled1/pages/cart.dart';
 import 'package:untitled1/pages/more.dart';
 
@@ -34,14 +34,18 @@ class _NavigationState extends State<Navigation> {
       child: SizedBox(
         height: 80.0,
         width: 360.0,
+        
         child: Container(
           margin: const EdgeInsets.all(12.0),
+
           decoration: BoxDecoration(
             color: const Color.fromRGBO(227, 227, 227, 1),
             borderRadius: BorderRadius.circular(40.0),
           ),
+
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: [
 
               //map through the list of icons and display them in the navigation bar
@@ -59,6 +63,7 @@ class _NavigationState extends State<Navigation> {
                     );
 
                   },
+                  
                   child: Container(
                     height: selectedIndex == navItems.indexOf(item) ? 48 : 44,
                     width: selectedIndex == navItems.indexOf(item) ? (selectedIndex == 1 ? 136 : 102): 44,

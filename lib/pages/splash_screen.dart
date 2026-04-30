@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:untitled1/widgets/three_dot_loader.dart';
-import 'package:untitled1/pages/homepage.dart';
+import 'package:untitled1/pages/signin.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Homepage()),
+        MaterialPageRoute(builder: (context) => const Signin()),
       );
     });
   }
@@ -35,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               const Spacer(),
               
+              //big circular graphics
               Container(
                 width: 240,
                 height: 240,
