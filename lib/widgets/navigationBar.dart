@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/pages/categories.dart';
+import 'package:untitled1/pages/homepage.dart';
+import 'package:untitled1/pages/profile.dart';
+import 'package:untitled1/pages/cart.dart';
+import 'package:untitled1/pages/more.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -14,10 +19,10 @@ class _NavigationState extends State<Navigation> {
 
   //list of icons to be displayed in the navigation bar with their names as well
   final List<Map<String, dynamic>> navItems = [
-    {'icon': Icons.home, 'label': 'Home'},
-    {'icon': Icons.grid_view, 'label': 'Categories'},
-    {'icon': Icons.shopping_cart, 'label': 'Cart'},
-    {'icon': Icons.more_horiz, 'label': 'More'},
+    {'icon': Icons.home, 'label': 'Home', 'page': const Homepage()},
+    {'icon': Icons.grid_view, 'label': 'Categories', 'page': const Categories()},
+    {'icon': Icons.shopping_cart, 'label': 'Cart', 'page': const Cart()},
+    {'icon': Icons.more_horiz, 'label': 'More', 'page': const More()},
   ];
   
 
@@ -46,6 +51,13 @@ class _NavigationState extends State<Navigation> {
                     setState(() {
                       selectedIndex = navItems.indexOf(item);
                     });
+
+                    //navigation of the screen when the navigation icons are clicked
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => navItems[selectedIndex]['page']),
+                    );
+
                   },
                   child: Container(
                     height: selectedIndex == navItems.indexOf(item) ? 48 : 44,
