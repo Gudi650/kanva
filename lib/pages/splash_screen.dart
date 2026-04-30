@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/widgets/three_dot_loader.dart';
 import 'package:untitled1/pages/signin.dart';
 
@@ -47,22 +48,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
               const SizedBox(height: 20.0),
 
-              const Text(
+              Text(
                 'Kanva',
-                style: TextStyle(
+                style: GoogleFonts.inknutAntiqua(
                   fontSize: 60.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(255, 251, 205, 1),
-                  fontFamily: 'Inknut Antiqua',
-                  letterSpacing: 4.0,
+                  fontWeight: FontWeight.w300,
+                  color: const Color.fromRGBO(255, 251, 205, 1),
+                  letterSpacing: 2.0,
                 ),
               ),
 
               const SizedBox(height: 20.0),
 
-              const Text(
+              Text(
                 'design . deliver . wear',
-                style: TextStyle(
+                style: GoogleFonts.inknutAntiqua(
                   fontSize: 18.0,
                   color: Color.fromRGBO(255, 251, 205, 1),
                   letterSpacing: 4.0,
@@ -74,11 +74,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
               const Spacer(),
 
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: 40.0),
                 child: Text(
                   'Made for creators',
-                  style: TextStyle(
+                  style: GoogleFonts.inknutAntiqua(
                     fontSize: 16.0,
                     color: Color.fromRGBO(255, 251, 205, 1),
                     letterSpacing: 1.0,

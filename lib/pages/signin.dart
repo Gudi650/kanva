@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/pages/homepage.dart';
+import 'package:untitled1/pages/signup.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -377,12 +378,22 @@ class _SigninState extends State<Signin> {
                                   ),
                                 ),
                                 const SizedBox(width: 4.0),
-                                Text(
-                                  'Sign Up',
-                                  style: GoogleFonts.inknutAntiqua(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 1,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Signup(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Sign Up',
+                                    style: GoogleFonts.inknutAntiqua(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1,
+                                    ),
                                   ),
                                 ),
                               ],
