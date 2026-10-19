@@ -39,4 +39,13 @@ class ApiService {
     await Future.delayed(const Duration(milliseconds: 400));
     return List<Map<String, dynamic>>.from(_complaints);
   }
+
+  static Future<Map<String, dynamic>> submitFeedback({
+    required int rating,
+    required String category,
+    required String message,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 600));
+    return {'success': true, 'message': 'Feedback submitted.'};
+  }
 }
