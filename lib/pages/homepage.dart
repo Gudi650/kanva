@@ -43,7 +43,7 @@ class _HomepageState extends State<Homepage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Profile(),
+                          builder: (context) => const AccountActivity(),
                         ),
                       );
                     },

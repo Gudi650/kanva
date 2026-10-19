@@ -50,7 +50,7 @@ class AccountActivity extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      _StatChip(label: 'Bookings', value: '6'),
+                      _StatChip(label: 'Orders', value: '6'),
                       SizedBox(width: 24),
                       _StatChip(label: 'Saved', value: '12'),
                       SizedBox(width: 24),
@@ -84,12 +84,12 @@ class AccountActivity extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 20),
-                  const Text('Booking History',
+                  const Text('Order History',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
                   const SizedBox(height: 12),
                   ...[
-                    {'apt': 'Skyline Residences', 'date': 'Jun 1 – Jun 30, 2025', 'status': 'Active', 'statusColor': KanvaColors.success},
-                    {'apt': 'Garden Apartments', 'date': 'Mar 1 – May 31, 2025', 'status': 'Completed', 'statusColor': KanvaColors.primary},
+                    {'apt': 'Linen Shirt', 'date': 'Ordered Jun 12, 2026', 'status': 'Shipped', 'statusColor': KanvaColors.success},
+                    {'apt': 'Denim Jacket', 'date': 'Ordered Mar 8, 2026', 'status': 'Delivered', 'statusColor': KanvaColors.primary},
                   ].map((b) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: KCard(
@@ -98,7 +98,7 @@ class AccountActivity extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: KanvaColors.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
-                          child: const Icon(Icons.apartment_outlined, color: KanvaColors.primary),
+                          child: const Icon(Icons.checkroom_outlined, color: KanvaColors.primary),
                         ),
                         const SizedBox(width: 12),
                         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
