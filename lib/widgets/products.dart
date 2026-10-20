@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../pages/product_details.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -47,7 +48,16 @@ class _ProductsState extends State<Products> {
         scrollDirection: Axis.horizontal,
         itemCount: products.length,
         itemBuilder: (context, index) {
-          return Container(
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductDetails(product: products[index]),
+                ),
+              );
+            },
+            child: Container(
             width: 200,
             margin: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -125,6 +135,7 @@ class _ProductsState extends State<Products> {
                 
               ],
             ),
+          ),
           );
         },
       ),
