@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled1/pages/homepage.dart';
+import 'package:untitled1/widgets/navigationBar.dart';
 import 'package:untitled1/pages/signup.dart';
 
 class Signin extends StatefulWidget {
@@ -246,7 +246,7 @@ class _SigninState extends State<Signin> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const Homepage(),
+                                      builder: (context) => const Navigation(),
                                     ),
                                   );
                                 },

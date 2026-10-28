@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/navigationBar.dart';
 import '../widgets/products.dart';
 import 'package:untitled1/pages/profile.dart';
 
@@ -214,7 +213,6 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
       ),
-      bottomNavigationBar: const Navigation(),
     );
   }
 }
