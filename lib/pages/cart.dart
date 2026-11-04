@@ -92,12 +92,12 @@ class _CartState extends State<Cart> {
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: KanvaColors.primary)),
             ]),
           ),
-          Column(children: [
+          Row(mainAxisSize: MainAxisSize.min, children: [
             GestureDetector(
               onTap: () => setState(() => _items.removeAt(i)),
               child: const Icon(Icons.delete_outline, color: KanvaColors.error, size: 20),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(width: 8),
             Container(
               decoration: BoxDecoration(
                 color: KanvaColors.inputBg,
