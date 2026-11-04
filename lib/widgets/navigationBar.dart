@@ -29,6 +29,7 @@ class _NavigationState extends State<Navigation> {
         if (!didPop) setState(() => selectedIndex = 0);
       },
       child: Scaffold(
+        backgroundColor: const Color.fromRGBO(228, 235, 255, 1),
         body: IndexedStack(
           index: selectedIndex,
           children: [
@@ -43,7 +44,7 @@ class _NavigationState extends State<Navigation> {
             child: Container(
               margin: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(227, 227, 227, 1),
+                color: const Color.fromRGBO(245, 245, 245, 1),
                 borderRadius: BorderRadius.circular(40.0),
               ),
               child: Row(

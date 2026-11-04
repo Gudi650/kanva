@@ -150,10 +150,10 @@ class _ContactActivityState extends State<ContactActivity> {
         backgroundColor: KanvaColors.primary,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: KanvaColors.cream),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Kanva Support', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Kanva Support', style: TextStyle(color: KanvaColors.cream, fontWeight: FontWeight.w400, letterSpacing: 2)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

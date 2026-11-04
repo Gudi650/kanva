@@ -36,7 +36,7 @@ class _ComplainsActivityState extends State<ComplainsActivity> with SingleTicker
     return Scaffold(
       backgroundColor: KanvaColors.background,
       appBar: AppBar(
-        backgroundColor: KanvaColors.background,
+        backgroundColor: KanvaColors.primary,
         elevation: 0,
         centerTitle: true,
         leading: GestureDetector(
@@ -44,23 +44,20 @@ class _ComplainsActivityState extends State<ComplainsActivity> with SingleTicker
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Container(
-              decoration: BoxDecoration(
-                color: KanvaColors.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
+              decoration: const BoxDecoration(color: KanvaColors.cream, shape: BoxShape.circle),
               child: const Icon(Icons.arrow_back_ios_new, size: 16, color: KanvaColors.primary),
             ),
           ),
         ),
         title: const Text(
           'Kanva',
-          style: TextStyle(color: KanvaColors.primary, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+          style: TextStyle(color: KanvaColors.cream, fontSize: 22, fontWeight: FontWeight.w400, letterSpacing: 2),
         ),
         bottom: TabBar(
           controller: _tab,
-          labelColor: KanvaColors.primary,
-          unselectedLabelColor: KanvaColors.textLight,
-          indicatorColor: KanvaColors.primary,
+          labelColor: KanvaColors.cream,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: KanvaColors.cream,
           indicatorWeight: 3,
           tabs: const [Tab(text: 'Submit Complaint'), Tab(text: 'My Complaints')],
         ),

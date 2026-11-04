@@ -64,15 +64,15 @@ class _UserFeedbackActivityState extends State<UserFeedbackActivity> {
     return Scaffold(
       backgroundColor: KanvaColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: KanvaColors.primary,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: KanvaColors.textDark),
+          icon: const Icon(Icons.arrow_back, color: KanvaColors.cream),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Kanva Feedback',
-          style: TextStyle(color: KanvaColors.textDark, fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(color: KanvaColors.cream, fontWeight: FontWeight.w400, fontSize: 18, letterSpacing: 2),
         ),
         centerTitle: true,
       ),

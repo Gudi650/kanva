@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
-import 'cart.dart';
 import 'favourites.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -38,7 +37,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             }),
             icon: Icon(
               _liked ? Icons.favorite : Icons.favorite_border,
-              color: _liked ? KanvaColors.pinkFav : KanvaColors.primary,
+              color: _liked ? KanvaColors.pinkFav : KanvaColors.cream,
             ),
           ),
         ],
@@ -238,22 +237,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: KButton(
           label: 'Add to Cart  ·  ${p['price'] ?? ''}',
           icon: Icons.shopping_cart_outlined,
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${p['name']} · $_size · x$_qty added'),
-                backgroundColor: KanvaColors.success,
-                action: SnackBarAction(
-                  label: 'View',
-                  textColor: Colors.white,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const Cart()),
-                  ),
-                ),
-              ),
-            );
-          },
+          onTap: () {},
         ),
       ),
     );

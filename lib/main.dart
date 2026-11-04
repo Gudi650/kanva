@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'pages/splash_screen.dart';
-//import 'package:google_fonts/google_fonts.dart';
+import 'theme/theme.dart';
 
 void main() => runApp(
-  const MaterialApp(
-    debugShowCheckedModeBanner: false, 
-    
-    home: SplashScreen(),
-    ),
+  MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: kanvaTheme(),
+    home: const SplashScreen(),
+  ),
 );

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class KanvaColors {
-  static const Color primary = Color(0xFF5B6BBF);
+  static const Color primary = Color.fromRGBO(85, 101, 175, 1);
   static const Color primaryLight = Color(0xFF7B8ED4);
   static const Color primaryDark = Color(0xFF3D4D9E);
-  static const Color accent = Color(0xFFF5EFB8);
-  static const Color background = Color(0xFFF0F0F8);
+  static const Color cream = Color.fromRGBO(255, 251, 205, 1);
+  static const Color accent = Color.fromRGBO(255, 251, 205, 1);
+  static const Color background = Color.fromRGBO(228, 235, 255, 1);
   static const Color pinkFav = Color(0xFFE91E8C);
   static const Color textDark = Color(0xFF1A1A2E);
   static const Color textMid = Color(0xFF4A4A6A);
   static const Color textLight = Color(0xFF9090B0);
-  static const Color inputBg = Color(0xFFE8E8F4);
+  static const Color inputBg = Color.fromRGBO(245, 245, 245, 1);
   static const Color divider = Color(0xFFD8D8EE);
   static const Color success = Color(0xFF4CAF50);
   static const Color error = Color(0xFFE53935);
@@ -19,32 +21,38 @@ class KanvaColors {
 }
 
 ThemeData kanvaTheme() {
+  final text = GoogleFonts.inknutAntiquaTextTheme();
   return ThemeData(
     scaffoldBackgroundColor: KanvaColors.background,
+    textTheme: text,
+    primaryTextTheme: text,
+    fontFamily: GoogleFonts.inknutAntiqua().fontFamily,
     primaryColor: KanvaColors.primary,
     colorScheme: const ColorScheme.light(
       primary: KanvaColors.primary,
       secondary: KanvaColors.accent,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: KanvaColors.background,
+      backgroundColor: KanvaColors.primary,
+      foregroundColor: KanvaColors.cream,
       elevation: 0,
       centerTitle: true,
-      iconTheme: IconThemeData(color: KanvaColors.primary),
+      iconTheme: IconThemeData(color: KanvaColors.cream),
+      titleTextStyle: TextStyle(color: KanvaColors.cream, fontSize: 22, letterSpacing: 2),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: KanvaColors.inputBg,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(60),
         borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(60),
         borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(60),
         borderSide: const BorderSide(color: KanvaColors.primary, width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -54,10 +62,10 @@ ThemeData kanvaTheme() {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: KanvaColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: KanvaColors.inputBg,
+        foregroundColor: Colors.black,
         minimumSize: const Size(double.infinity, 50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
         elevation: 0,
         textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
@@ -77,17 +85,18 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: KanvaColors.background,
+      backgroundColor: KanvaColors.primary,
       elevation: 0,
       centerTitle: true,
+      iconTheme: const IconThemeData(color: KanvaColors.cream),
       leading: showBack
           ? GestureDetector(
               onTap: () => Navigator.maybePop(context),
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: KanvaColors.primary.withOpacity(0.1),
+                  decoration: const BoxDecoration(
+                    color: KanvaColors.cream,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.arrow_back_ios_new, size: 16, color: KanvaColors.primary),
@@ -96,8 +105,8 @@ class KAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           : null,
       title: Text(title,
-          style: const TextStyle(
-              color: KanvaColors.primary, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+          style: GoogleFonts.inknutAntiqua(
+              color: KanvaColors.cream, fontSize: 22, fontWeight: FontWeight.w400, letterSpacing: 2)),
       actions: actions,
     );
   }
@@ -117,7 +126,8 @@ class KButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = color ?? KanvaColors.primary;
+    final bg = color ?? KanvaColors.inputBg;
+    final fg = color == null ? Colors.black : Colors.white;
     if (outline) {
       return SizedBox(
         width: double.infinity,
@@ -127,8 +137,8 @@ class KButton extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: bg,
             side: BorderSide(color: bg, width: 1.5),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+            textStyle: GoogleFonts.inknutAntiqua(fontSize: 16, letterSpacing: 2),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -147,10 +157,10 @@ class KButton extends StatelessWidget {
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: bg,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          foregroundColor: fg,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
           elevation: 0,
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: GoogleFonts.inknutAntiqua(fontSize: 16, letterSpacing: 2, color: fg),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

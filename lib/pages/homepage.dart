@@ -29,6 +29,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(228, 235, 255, 1),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -109,9 +110,9 @@ class _HomepageState extends State<Homepage> {
                       child: Icon(Icons.search),
                     ),
                     filled: true,
-                    fillColor: Color.fromRGBO(227, 227, 227, 1),
+                    fillColor: const Color.fromRGBO(245, 245, 245, 1),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(60.0),
                       borderSide: BorderSide.none,
                     ),
                   ),
