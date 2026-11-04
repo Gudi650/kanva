@@ -113,8 +113,9 @@ class _ProductsState extends State<Products> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      Text(products[index]['store']!, style: GoogleFonts.inknutAntiqua(fontSize: 16.0, color: Colors.white)),
-                      SizedBox(width: 108.0),
+                      Expanded(
+                        child: Text(products[index]['store']!, style: GoogleFonts.inknutAntiqua(fontSize: 16.0, color: Colors.white), overflow: TextOverflow.ellipsis, maxLines: 1),
+                      ),
                       Icon(Icons.store, color: Colors.white, size: 24.0),
                     ],
                   ),
@@ -123,8 +124,9 @@ class _ProductsState extends State<Products> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
-                      Text(products[index]['price']!, style: GoogleFonts.inknutAntiqua(fontSize: 12.0, color: Colors.white)),
-                      SizedBox(width: 104.0),
+                      Expanded(
+                        child: Text(products[index]['price']!, style: GoogleFonts.inknutAntiqua(fontSize: 12.0, color: Colors.white), overflow: TextOverflow.ellipsis, maxLines: 1),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
                         child: Icon(Icons.local_offer, color: Colors.white, size: 16.0),

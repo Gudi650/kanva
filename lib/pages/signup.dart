@@ -250,7 +250,7 @@ class _SignupState extends State<Signup> {
                                     });
                                   },
 
-                                  fillColor: MaterialStateProperty.all(
+                                  fillColor: WidgetStateProperty.all(
                                     Colors.white,
                                   ),
                                   checkColor: Colors.black,
