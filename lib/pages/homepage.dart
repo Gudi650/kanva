@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/products.dart';
 import 'package:untitled1/pages/profile.dart';
+import 'favourites.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -73,18 +74,17 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
 
-                  //notification icons
-                  Container(
-                    height: 48,
-                    width: 48,
-                    margin: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromRGBO(85, 101, 175, 1.0),
-                    ),
-                    child: const Icon(
-                      Icons.notification_add,
-                      color: Colors.white,
+                  GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const Favourites())),
+                    child: Container(
+                      height: 48,
+                      width: 48,
+                      margin: const EdgeInsets.all(12.0),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color.fromRGBO(85, 101, 175, 1.0),
+                      ),
+                      child: const Icon(Icons.favorite, color: Colors.white),
                     ),
                   ),
                 ],

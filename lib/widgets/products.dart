@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../pages/product_details.dart';
+import '../pages/favourites.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -88,18 +89,18 @@ class _ProductsState extends State<Products> {
                     Positioned(
                       top: 6,
                       right: 6,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.pinkAccent,
+                      child: GestureDetector(
+                        onTap: () => setState(() => FavouritesStore.toggle(products[index])),
+                        child: Container(
+                          decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.pinkAccent),
+                          padding: const EdgeInsets.all(7.0),
+                          child: Icon(
+                            FavouritesStore.has(products[index]) ? Icons.favorite : Icons.favorite_border,
+                            color: Colors.white,
+                            size: 20.0,
+                          ),
                         ),
-                        padding: const EdgeInsets.all(7.0),
-                        child: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                      )
+                      ),
                     ),
 
                   ],

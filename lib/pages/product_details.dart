@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'cart.dart';
+import 'favourites.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map<String, String> product;
@@ -13,8 +14,14 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   String _size = 'M';
   int _qty = 1;
-  bool _liked = false;
+  late bool _liked;
   final _sizes = const ['S', 'M', 'L', 'XL'];
+
+  @override
+  void initState() {
+    super.initState();
+    _liked = FavouritesStore.has(widget.product);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,10 @@ class _ProductDetailsState extends State<ProductDetails> {
         title: 'Kanva',
         actions: [
           IconButton(
-            onPressed: () => setState(() => _liked = !_liked),
+            onPressed: () => setState(() {
+              FavouritesStore.toggle(widget.product);
+              _liked = !_liked;
+            }),
             icon: Icon(
               _liked ? Icons.favorite : Icons.favorite_border,
               color: _liked ? KanvaColors.pinkFav : KanvaColors.primary,
