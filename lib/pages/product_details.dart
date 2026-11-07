@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
 import 'favourites.dart';
 
@@ -13,8 +14,16 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   String _size = 'M';
   int _qty = 1;
+  int _color = 0;
+  bool _more = false;
   late bool _liked;
   final _sizes = const ['S', 'M', 'L', 'XL'];
+  final _colors = const [
+    KanvaColors.cream,
+    KanvaColors.primary,
+    Colors.black,
+    Color(0xFFE53935),
+  ];
 
   @override
   void initState() {
@@ -25,233 +34,355 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     final p = widget.product;
+    final top = MediaQuery.paddingOf(context).top;
     return Scaffold(
       backgroundColor: KanvaColors.background,
-      appBar: KAppBar(
-        title: 'Kanva',
-        actions: [
-          IconButton(
-            onPressed: () => setState(() {
-              FavouritesStore.toggle(widget.product);
-              _liked = !_liked;
-            }),
-            icon: Icon(
-              _liked ? Icons.favorite : Icons.favorite_border,
-              color: _liked ? KanvaColors.pinkFav : KanvaColors.cream,
-            ),
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+      body: Stack(
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x22000000),
-                  blurRadius: 16,
-                  offset: Offset(0, 8),
+          ListView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.paddingOf(context).bottom + 90,
+            ),
+            children: [
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.6,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      p['image'] ?? 'assets/images/shirt.jpg',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: KanvaColors.inputBg,
+                        child: const Icon(
+                          Icons.checkroom,
+                          size: 64,
+                          color: KanvaColors.primary,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: top + 8,
+                      left: 16,
+                      child: _circle(
+                        Icons.arrow_back_ios_new,
+                        () => Navigator.maybePop(context),
+                      ),
+                    ),
+                    Positioned(
+                      top: top + 8,
+                      right: 16,
+                      child: _circle(
+                        _liked ? Icons.favorite : Icons.favorite_border,
+                        () => setState(() {
+                          FavouritesStore.toggle(widget.product);
+                          _liked = !_liked;
+                        }),
+                        iconColor: _liked
+                            ? KanvaColors.pinkFav
+                            : KanvaColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Transform.translate(
+                offset: const Offset(0, -32),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: KanvaColors.background,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(32),
+                    ),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              p['name'] ?? 'Item',
+                              style: GoogleFonts.inknutAntiqua(
+                                fontSize: 20,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: KanvaColors.cream,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              'In stock',
+                              style: GoogleFonts.inknutAntiqua(fontSize: 11),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: KanvaColors.primary,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '4.8 (126)',
+                            style: GoogleFonts.inknutAntiqua(
+                              fontSize: 12,
+                              color: KanvaColors.textMid,
+                            ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            'Tsh 59.99',
+                            style: GoogleFonts.inknutAntiqua(
+                              fontSize: 12,
+                              color: KanvaColors.textLight,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            p['price'] ?? '',
+                            style: GoogleFonts.inknutAntiqua(
+                              fontSize: 16,
+                              color: KanvaColors.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: KanvaColors.cream,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              '-20%',
+                              style: GoogleFonts.inknutAntiqua(fontSize: 10),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      Row(
+                        children: [
+                          Text(
+                            'Size',
+                            style: GoogleFonts.inknutAntiqua(fontSize: 14),
+                          ),
+                          const SizedBox(width: 10),
+                          ..._sizes.map((s) {
+                            final sel = _size == s;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: GestureDetector(
+                                onTap: () => setState(() => _size = s),
+                                child: CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: sel
+                                      ? KanvaColors.primary
+                                      : KanvaColors.cream,
+                                  child: Text(
+                                    s,
+                                    style: GoogleFonts.inknutAntiqua(
+                                      fontSize: 11,
+                                      color: sel
+                                          ? KanvaColors.cream
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Text(
+                            'Color',
+                            style: GoogleFonts.inknutAntiqua(fontSize: 14),
+                          ),
+                          const SizedBox(width: 10),
+                          ...List.generate(
+                            _colors.length,
+                            (i) => Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: GestureDetector(
+                                onTap: () => setState(() => _color = i),
+                                child: CircleAvatar(
+                                  radius: _color == i ? 14 : 12,
+                                  backgroundColor: _colors[i],
+                                  child: _color == i
+                                      ? Icon(
+                                          Icons.check,
+                                          size: 14,
+                                          color: i == 0
+                                              ? KanvaColors.primary
+                                              : Colors.white,
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            width: 120,
+                            height: 36,
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: KanvaColors.cream,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _qtyBtn(Icons.remove, () {
+                                  if (_qty > 1) setState(() => _qty--);
+                                }),
+                                Text(
+                                  '$_qty',
+                                  style: GoogleFonts.inknutAntiqua(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                _qtyBtn(
+                                  Icons.add,
+                                  () => setState(() => _qty++),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'About',
+                        style: GoogleFonts.inknutAntiqua(fontSize: 14),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Cotton everyday wear. Soft fabric, regular fit. Machine wash cold. Made for everyday wear in Dar es Salaam.',
+                        maxLines: _more ? null : 2,
+                        overflow: _more
+                            ? TextOverflow.visible
+                            : TextOverflow.ellipsis,
+                        style: GoogleFonts.inknutAntiqua(
+                          fontSize: 13,
+                          color: KanvaColors.textMid,
+                          height: 1.5,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => setState(() => _more = !_more),
+                        child: Text(
+                          _more ? 'Show less' : 'Read more',
+                          style: GoogleFonts.inknutAntiqua(
+                            fontSize: 12,
+                            color: KanvaColors.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.paddingOf(context).bottom + 12,
+            child: Row(
+              children: [
+                Expanded(
+                  child: _action(
+                    'Add to Cart',
+                    KanvaColors.inputBg,
+                    Colors.black,
+                    () {},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _action(
+                    'Buy Now',
+                    KanvaColors.primary,
+                    KanvaColors.cream,
+                    () {},
+                  ),
                 ),
               ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                p['image'] ?? 'assets/images/shirt.jpg',
-                height: 300,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  height: 300,
-                  color: KanvaColors.inputBg,
-                  child: const Icon(
-                    Icons.checkroom,
-                    size: 64,
-                    color: KanvaColors.primary,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              const Icon(Icons.star, color: Color(0xFFF5A623), size: 16),
-              const SizedBox(width: 4),
-              const Text(
-                '4.8',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: KanvaColors.textDark,
-                ),
-              ),
-              const Text(
-                '  ·  126 reviews',
-                style: TextStyle(fontSize: 12, color: KanvaColors.textLight),
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8F6EE),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'In stock',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: KanvaColors.success,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            p['name'] ?? 'Item',
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: KanvaColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            p['store'] ?? 'Kanva',
-            style: const TextStyle(fontSize: 13, color: KanvaColors.textLight),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            p['price'] ?? '',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: KanvaColors.primary,
-            ),
-          ),
-          const SizedBox(height: 12),
-          const Row(
-            children: [
-              Icon(
-                Icons.local_shipping_outlined,
-                size: 16,
-                color: KanvaColors.primary,
-              ),
-              SizedBox(width: 6),
-              Text(
-                'Free delivery in Dar es Salaam',
-                style: TextStyle(fontSize: 12, color: KanvaColors.textMid),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Text(
-            'Cotton everyday wear. Soft fabric, regular fit. Machine wash cold.',
-            style: TextStyle(
-              fontSize: 13,
-              color: KanvaColors.textMid,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Size',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: KanvaColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: _sizes.map((s) {
-              final sel = _size == s;
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: GestureDetector(
-                  onTap: () => setState(() => _size = s),
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: sel ? KanvaColors.primary : KanvaColors.inputBg,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      s,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: sel ? Colors.white : KanvaColors.textMid,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Quantity',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: KanvaColors.textDark,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              _qtyBtn(Icons.remove, () {
-                if (_qty > 1) setState(() => _qty--);
-              }),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  '$_qty',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: KanvaColors.textDark,
-                  ),
-                ),
-              ),
-              _qtyBtn(Icons.add, () => setState(() => _qty++)),
-            ],
           ),
         ],
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x14000000),
-              blurRadius: 16,
-              offset: Offset(0, -4),
-            ),
-          ],
-        ),
-        child: KButton(
-          label: 'Add to Cart  ·  ${p['price'] ?? ''}',
-          icon: Icons.shopping_cart_outlined,
-          onTap: () {},
-        ),
       ),
     );
   }
 
+  Widget _circle(
+    IconData icon,
+    VoidCallback onTap, {
+    Color iconColor = KanvaColors.primary,
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: 44,
+      width: 44,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: KanvaColors.cream,
+      ),
+      child: Icon(icon, size: 18, color: iconColor),
+    ),
+  );
+
+  Widget _action(String label, Color bg, Color fg, VoidCallback onTap) =>
+      SizedBox(
+        height: 50,
+        child: ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: bg,
+            foregroundColor: fg,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(60),
+            ),
+          ),
+          child: Text(
+            label,
+            style: GoogleFonts.inknutAntiqua(
+              fontSize: 14,
+              color: fg,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ),
+      );
+
   Widget _qtyBtn(IconData icon, VoidCallback onTap) => GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: KanvaColors.inputBg,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Icon(icon, size: 18, color: KanvaColors.primary),
+      margin: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(6),
+      decoration: const BoxDecoration(color: KanvaColors.primary, shape: BoxShape.circle),
+      child: Icon(icon, size: 16, color: KanvaColors.cream),
     ),
   );
 }
