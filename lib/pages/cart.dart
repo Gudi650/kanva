@@ -135,8 +135,10 @@ class _CartState extends State<Cart> {
     ),
   );
 
-  Widget _bottomBar() => Container(
-    padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+  Widget _bottomBar() => Padding(
+    padding: const EdgeInsets.only(bottom: 88),
+    child: Container(
+    padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
     decoration: const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -151,5 +153,6 @@ class _CartState extends State<Cart> {
       const SizedBox(height: 14),
       KButton(label: 'Checkout', icon: Icons.lock_outline, onTap: _checkout),
     ]),
+    ),
   );
 }

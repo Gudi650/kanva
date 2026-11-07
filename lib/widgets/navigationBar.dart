@@ -30,24 +30,25 @@ class _NavigationState extends State<Navigation> {
       },
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(228, 235, 255, 1),
-        body: IndexedStack(
-          index: selectedIndex,
+        body: Stack(
           children: [
-            for (final item in navItems) item['page'] as Widget,
-          ],
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.fromLTRB(36, 0, 36, 10),
-          child: SizedBox(
-            height: 80.0,
-            width: 360.0,
-            child: Container(
-              margin: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(245, 245, 245, 1),
-                borderRadius: BorderRadius.circular(40.0),
-              ),
-              child: Row(
+            IndexedStack(
+              index: selectedIndex,
+              children: [
+                for (final item in navItems) item['page'] as Widget,
+              ],
+            ),
+            Positioned(
+              left: 36,
+              right: 36,
+              bottom: MediaQuery.paddingOf(context).bottom + 12,
+              child: Container(
+                height: 56,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(245, 245, 245, 1),
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ...navItems.map((item) {
@@ -91,6 +92,7 @@ class _NavigationState extends State<Navigation> {
               ),
             ),
           ),
+        ],
         ),
       ),
     );

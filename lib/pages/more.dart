@@ -16,7 +16,7 @@ class _MoreState extends State<More> {
       backgroundColor: KanvaColors.background,
       appBar: const KAppBar(title: 'Kanva'),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 110),
         children: [
           KCard(
             padding: EdgeInsets.zero,

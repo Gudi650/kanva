@@ -252,6 +252,7 @@ class _HomepageState extends State<Homepage> {
 
               //cards for the products
               const Products(),
+              const SizedBox(height: 100),
             ],
           ),
         ),

@@ -20,7 +20,7 @@ class Categories extends StatelessWidget {
       backgroundColor: KanvaColors.background,
       appBar: const KAppBar(title: 'Kanva'),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
         children: [
           const Text('Categories',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
@@ -92,7 +92,7 @@ class _CategoryItems extends StatelessWidget {
       backgroundColor: KanvaColors.background,
       appBar: const KAppBar(title: 'Kanva'),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
         children: [
           Text(name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
           const SizedBox(height: 16),
