@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
+import '../widgets/add_item.dart';
 import 'checkout.dart';
-import 'checkout.dart';
+
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -97,6 +98,7 @@ class _CartState extends State<Cart> {
               Text(_tsh(item['price'] as double), style: GoogleFonts.inknutAntiqua(fontSize: 13, color: KanvaColors.primary)),
               const SizedBox(height: 8),
               Row(children: [
+
                 GestureDetector(
                   onTap: () => setState(() => _items.removeAt(i)),
                   child: Container(
@@ -105,24 +107,18 @@ class _CartState extends State<Cart> {
                     child: const Icon(Icons.delete_outline, color: KanvaColors.error, size: 16),
                   ),
                 ),
+
                 const Spacer(),
-                Container(
-                  width: 120,
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  decoration: BoxDecoration(color: KanvaColors.cream, borderRadius: BorderRadius.circular(40)),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    _qtyBtn(Icons.remove, () {
-                      setState(() {
-                        if (item['qty'] > 1) {
-                          item['qty']--;
-                        } else {
-                          _items.removeAt(i);
-                        }
-                      });
-                    }),
-                    Text('${item['qty']}', style: GoogleFonts.inknutAntiqua(fontSize: 14)),
-                    _qtyBtn(Icons.add, () => setState(() => item['qty']++)),
-                  ]),
+                AddItem(
+                  count: item['qty'] as int,
+                  min: 0,
+                  onChanged: (n) => setState(() {
+                    if (n < 1) {
+                      _items.removeAt(i);
+                    } else {
+                      item['qty'] = n;
+                    }
+                  }),
                 ),
               ]),
             ]),
@@ -132,13 +128,4 @@ class _CartState extends State<Cart> {
     },
   );
 
-  Widget _qtyBtn(IconData icon, VoidCallback onTap) => GestureDetector(
-    onTap: onTap,
-    child: Container(
-      margin: const EdgeInsets.all(2),
-      padding: const EdgeInsets.all(4),
-      decoration: const BoxDecoration(color: KanvaColors.primary, shape: BoxShape.circle),
-      child: Icon(icon, size: 14, color: KanvaColors.cream),
-    ),
-  );
 }

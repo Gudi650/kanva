@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
+import '../widgets/add_item.dart';
 import 'favourites.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -241,32 +242,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ),
                           ),
                           const Spacer(),
-                          Container(
-                            width: 120,
-                            height: 36,
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: KanvaColors.cream,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _qtyBtn(Icons.remove, () {
-                                  if (_qty > 1) setState(() => _qty--);
-                                }),
-                                Text(
-                                  '$_qty',
-                                  style: GoogleFonts.inknutAntiqua(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                _qtyBtn(
-                                  Icons.add,
-                                  () => setState(() => _qty++),
-                                ),
-                              ],
-                            ),
+                          AddItem(
+                            count: _qty,
+                            width: 148,
+                            onChanged: (n) => setState(() => _qty = n),
                           ),
                         ],
                       ),
@@ -376,13 +355,4 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       );
 
-  Widget _qtyBtn(IconData icon, VoidCallback onTap) => GestureDetector(
-    onTap: onTap,
-    child: Container(
-      margin: const EdgeInsets.all(0),
-      padding: const EdgeInsets.all(6),
-      decoration: const BoxDecoration(color: KanvaColors.primary, shape: BoxShape.circle),
-      child: Icon(icon, size: 16, color: KanvaColors.cream),
-    ),
-  );
 }
