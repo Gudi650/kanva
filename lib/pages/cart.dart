@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
+import 'checkout.dart';
+import 'checkout.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -49,7 +51,13 @@ class _CartState extends State<Cart> {
                       Text(_tsh(_subtotal), style: GoogleFonts.inknutAntiqua(fontSize: 16, color: KanvaColors.primary)),
                     ]),
                     const SizedBox(height: 12),
-                    KButton(label: 'Checkout', color: KanvaColors.primary, onTap: () {}),
+                    KButton(
+                      label: 'Checkout',
+                      color: KanvaColors.primary,
+                      onTap: () => Navigator.push(context, MaterialPageRoute(
+                        builder: (_) => Checkout(items: _count, subtotal: _subtotal),
+                      )),
+                    ),
                   ],
                 ),
               ),

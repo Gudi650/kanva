@@ -55,6 +55,7 @@ class _HomepageState extends State<Homepage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      //account activity button
                       GestureDetector(
                         onTap: () => Navigator.push(
                           context,
@@ -75,6 +76,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                       ),
+
                       Text(
                         'Kanva',
                         style: GoogleFonts.inknutAntiqua(
@@ -84,6 +86,8 @@ class _HomepageState extends State<Homepage> {
                           color: const Color.fromRGBO(255, 251, 205, 1),
                         ),
                       ),
+
+                      //favourites button
                       GestureDetector(
                         onTap: () => Navigator.push(
                           context,
@@ -106,6 +110,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 20),
 
+                  //search bar
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'Search',
@@ -130,6 +135,8 @@ class _HomepageState extends State<Homepage> {
             ),
 
             SizedBox(height: 10.0),
+
+            /*
 
             SizedBox(height: 10.0),
 
@@ -181,9 +188,11 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
+            */
 
             const SizedBox(height: 12),
 
+/*
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(
@@ -217,6 +226,8 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
             ),
+
+            */
 
             const SizedBox(height: 8),
 
