@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
+import 'logout.dart';
 
 class AccountActivity extends StatelessWidget {
   const AccountActivity({super.key});
@@ -121,7 +122,11 @@ class AccountActivity extends StatelessWidget {
                   const SizedBox(height: 12),
                   KButton(label: 'Save Changes', onTap: () {}),
                   const SizedBox(height: 12),
-                  KButton(label: 'Log Out', outline: true, onTap: () {}),
+                  KButton(
+                    label: 'Log Out',
+                    color: KanvaColors.error,
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const Logout())),
+                  ),
                   const SizedBox(height: 32),
                 ],
               ),
