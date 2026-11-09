@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
 
 class Cart extends StatefulWidget {
@@ -10,59 +11,60 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final List<Map<String, dynamic>> _items = [
-    {'name': 'Product 1', 'store': 'Kanva', 'price': 19999.0, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
-    {'name': 'Product 2', 'store': 'Kanva', 'price': 29999.0, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
-    {'name': 'Product 3', 'store': 'Kanva', 'price': 39999.0, 'qty': 2, 'image': 'assets/images/shirt.jpg'},
+    {'name': 'Product 1', 'store': 'Kanva', 'price': 19.99, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
+    {'name': 'Product 2', 'store': 'Kanva', 'price': 29.99, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
+    {'name': 'Product 3', 'store': 'Kanva', 'price': 39.99, 'qty': 2, 'image': 'assets/images/shirt.jpg'},
   ];
 
-  double get _subtotal =>
-      _items.fold(0, (sum, i) => sum + (i['price'] as double) * (i['qty'] as int));
+  double get _subtotal => _items.fold(0, (sum, i) => sum + (i['price'] as double) * (i['qty'] as int));
+  int get _count => _items.fold(0, (sum, i) => sum + (i['qty'] as int));
 
-  String _tzs(double v) => 'TZS ${v.toStringAsFixed(0)}';
+  String _tsh(double v) => 'Tsh ${v.toStringAsFixed(2)}';
 
-  void _checkout() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Checkout coming soon'),
-        backgroundColor: KanvaColors.primary,
+  @override
+  Widget build(BuildContext context) {
+    final bottom = MediaQuery.paddingOf(context).bottom;
+    return Scaffold(
+      backgroundColor: KanvaColors.background,
+      appBar: const KAppBar(title: 'Kanva'),
+      body: Stack(
+        children: [
+          _items.isEmpty ? _empty() : _list(bottom),
+          if (_items.isNotEmpty)
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: bottom + 88,
+              child: KCard(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Text('Items', style: GoogleFonts.inknutAntiqua(fontSize: 14, color: KanvaColors.textMid)),
+                      Text('$_count', style: GoogleFonts.inknutAntiqua(fontSize: 16, color: KanvaColors.textDark)),
+                    ]),
+                    const SizedBox(height: 8),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Text('Subtotal', style: GoogleFonts.inknutAntiqua(fontSize: 14, color: KanvaColors.textMid)),
+                      Text(_tsh(_subtotal), style: GoogleFonts.inknutAntiqua(fontSize: 16, color: KanvaColors.primary)),
+                    ]),
+                    const SizedBox(height: 12),
+                    KButton(label: 'Checkout', color: KanvaColors.primary, onTap: () {}),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: KanvaColors.background,
-      appBar: const KAppBar(title: 'Kanva'),
-      body: _items.isEmpty ? _empty() : _list(),
-      bottomNavigationBar: _items.isEmpty ? null : _bottomBar(),
-    );
-  }
-
   Widget _empty() => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(32),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: KanvaColors.primary.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.shopping_cart_outlined, color: KanvaColors.primary, size: 48),
-        ),
-        const SizedBox(height: 20),
-        const Text('Your cart is empty',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
-        const SizedBox(height: 8),
-        const Text('Browse items and add them here.',
-            textAlign: TextAlign.center, style: TextStyle(color: KanvaColors.textLight, fontSize: 13)),
-      ]),
-    ),
+    child: Text('Your cart is empty', style: GoogleFonts.inknutAntiqua(fontSize: 16, color: KanvaColors.textMid)),
   );
 
-  Widget _list() => ListView.separated(
-    padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+  Widget _list(double bottom) => ListView.separated(
+    padding: EdgeInsets.fromLTRB(20, 12, 20, bottom + 230),
     itemCount: _items.length,
     separatorBuilder: (_, __) => const SizedBox(height: 12),
     itemBuilder: (_, i) {
@@ -71,10 +73,10 @@ class _CartState extends State<Cart> {
         padding: const EdgeInsets.all(12),
         child: Row(children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(item['image'] as String, width: 72, height: 72, fit: BoxFit.cover,
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset(item['image'] as String, width: 84, height: 84, fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
-                width: 72, height: 72, color: KanvaColors.inputBg,
+                width: 84, height: 84, color: KanvaColors.inputBg,
                 child: const Icon(Icons.checkroom, color: KanvaColors.primary),
               ),
             ),
@@ -82,46 +84,41 @@ class _CartState extends State<Cart> {
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(item['name'] as String,
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: KanvaColors.textDark)),
-              const SizedBox(height: 2),
-              Text(item['store'] as String,
-                  style: const TextStyle(fontSize: 12, color: KanvaColors.textLight)),
-              const SizedBox(height: 6),
-              Text(_tzs(item['price'] as double),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: KanvaColors.primary)),
+              Text(item['name'] as String, style: GoogleFonts.inknutAntiqua(fontSize: 14, color: KanvaColors.textDark)),
+              const SizedBox(height: 4),
+              Text(_tsh(item['price'] as double), style: GoogleFonts.inknutAntiqua(fontSize: 13, color: KanvaColors.primary)),
+              const SizedBox(height: 8),
+              Row(children: [
+                GestureDetector(
+                  onTap: () => setState(() => _items.removeAt(i)),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(color: KanvaColors.error.withValues(alpha: 0.12), shape: BoxShape.circle),
+                    child: const Icon(Icons.delete_outline, color: KanvaColors.error, size: 16),
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  width: 120,
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  decoration: BoxDecoration(color: KanvaColors.cream, borderRadius: BorderRadius.circular(40)),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    _qtyBtn(Icons.remove, () {
+                      setState(() {
+                        if (item['qty'] > 1) {
+                          item['qty']--;
+                        } else {
+                          _items.removeAt(i);
+                        }
+                      });
+                    }),
+                    Text('${item['qty']}', style: GoogleFonts.inknutAntiqua(fontSize: 14)),
+                    _qtyBtn(Icons.add, () => setState(() => item['qty']++)),
+                  ]),
+                ),
+              ]),
             ]),
           ),
-          Row(mainAxisSize: MainAxisSize.min, children: [
-            GestureDetector(
-              onTap: () => setState(() => _items.removeAt(i)),
-              child: const Icon(Icons.delete_outline, color: KanvaColors.error, size: 20),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: KanvaColors.inputBg,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(children: [
-                _qtyBtn(Icons.remove, () {
-                  setState(() {
-                    if (item['qty'] > 1) {
-                      item['qty']--;
-                    } else {
-                      _items.removeAt(i);
-                    }
-                  });
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Text('${item['qty']}',
-                      style: const TextStyle(fontWeight: FontWeight.w600, color: KanvaColors.textDark)),
-                ),
-                _qtyBtn(Icons.add, () => setState(() => item['qty']++)),
-              ]),
-            ),
-          ]),
         ]),
       );
     },
@@ -129,30 +126,11 @@ class _CartState extends State<Cart> {
 
   Widget _qtyBtn(IconData icon, VoidCallback onTap) => GestureDetector(
     onTap: onTap,
-    child: Padding(
-      padding: const EdgeInsets.all(6),
-      child: Icon(icon, size: 16, color: KanvaColors.primary),
-    ),
-  );
-
-  Widget _bottomBar() => Padding(
-    padding: const EdgeInsets.only(bottom: 88),
     child: Container(
-    padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-    decoration: const BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      boxShadow: [BoxShadow(color: Color(0x14000000), blurRadius: 16, offset: Offset(0, -4))],
-    ),
-    child: Column(mainAxisSize: MainAxisSize.min, children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        const Text('Subtotal', style: TextStyle(fontSize: 14, color: KanvaColors.textMid)),
-        Text(_tzs(_subtotal),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
-      ]),
-      const SizedBox(height: 14),
-      KButton(label: 'Checkout', icon: Icons.lock_outline, onTap: _checkout),
-    ]),
+      margin: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(4),
+      decoration: const BoxDecoration(color: KanvaColors.primary, shape: BoxShape.circle),
+      child: Icon(icon, size: 14, color: KanvaColors.cream),
     ),
   );
 }
