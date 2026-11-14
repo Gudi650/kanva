@@ -17,6 +17,7 @@ void main() => runApp(
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   await Supabase.initialize(
     url: dotenv.env['SUPERBASE_URL']!,
     publishableKey: dotenv.env['SUPERBASE_ANON_KEY']!,
