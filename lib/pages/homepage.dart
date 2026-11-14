@@ -4,7 +4,7 @@ import '../widgets/products.dart';
 import 'package:untitled1/pages/profile.dart';
 import 'package:untitled1/pages/categories.dart';
 import 'favourites.dart';
-
+import '../services/categories_service.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -13,15 +13,15 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  //list of the scrollable categories
-  final List<String> categories = [
-    'All Items',
-    'Latest',
-    'Men',
-    'Women',
-    'Kids',
-    'Accessories',
-  ];
+  //creating an object of the categories service
+  final CategoriesService categoriesService = CategoriesService();
+  late Future<List<Map<String, dynamic>>> categories;
+
+  @override
+  void initState() {
+    super.initState();
+    categories = categoriesService.getAllCategories();
+  }
 
   //selected category index
   int selectedCategoryIndex = 0;
@@ -234,51 +234,45 @@ class _HomepageState extends State<Homepage> {
             //the scrollable category section is here
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ...categories.map(
-                    (category) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedCategoryIndex = categories.indexOf(category);
-                          selectedCategory = category;
-                        });
-
-                        //print('$selectedCategoryIndex');
-                      },
-                      child: Container(
-                        height: 36,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 8,
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          color:
-                              selectedCategoryIndex ==
-                                  categories.indexOf(category)
-                              ? const Color.fromRGBO(85, 101, 175, 1.0)
-                              : const Color.fromRGBO(255, 251, 205, 1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Center(
-                          child: Text(
-                            category,
-                            style: GoogleFonts.inknutAntiqua(
-                              color:
-                                  selectedCategoryIndex ==
-                                      categories.indexOf(category)
-                                  ? const Color.fromRGBO(255, 251, 205, 1)
-                                  : Colors.black,
-                              fontSize: 14,
-                              letterSpacing: 1,
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: categories,
+                builder: (context, snapshot) {
+                  final list = snapshot.data ?? [];
+                  return Row(
+                    children: [
+                      for (var i = 0; i < list.length; i++)
+                        GestureDetector(
+                          onTap: () => setState(() {
+                            selectedCategoryIndex = i;
+                            selectedCategory = list[i]['name'] as String;
+                          }),
+                          child: Container(
+                            height: 36,
+                            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: selectedCategoryIndex == i
+                                  ? const Color.fromRGBO(85, 101, 175, 1.0)
+                                  : const Color.fromRGBO(255, 251, 205, 1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Center(
+                              child: Text(
+                                list[i]['name'] as String,
+                                style: GoogleFonts.inknutAntiqua(
+                                  color: selectedCategoryIndex == i
+                                      ? const Color.fromRGBO(255, 251, 205, 1)
+                                      : Colors.black,
+                                  fontSize: 14,
+                                  letterSpacing: 1,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
+                    ],
+                  );
+                },
               ),
             ),
 

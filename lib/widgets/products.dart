@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled1/services/products_service.dart';
 import '../pages/product_details.dart';
 import '../pages/favourites.dart';
 
@@ -11,6 +12,7 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  /*
   //list of the products to be displayed (they conatins the name, price and image of the product)
   final List<Map<String, String>> products = [
     {
@@ -38,22 +40,40 @@ class _ProductsState extends State<Products> {
       'image': 'assets/images/shirt.jpg',
     },
   ];
+  */
+
+  //object initialisation of the products service
+  final ProductsService productsService = ProductsService();
+  late Future <List<Map<String, dynamic>>> products;
+
+  @override
+  void initState() {
+    super.initState();
+    products = productsService.getAllProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 276,
       width: double.infinity,
-      child: ListView.builder(
+      child: 
+      FutureBuilder<List<Map<String, dynamic>>>(
+        future: products,
+        builder: (context, snapshot) {
+          final list = snapshot.data ?? [];
+          return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: products.length,
+        itemCount: list.length,
         itemBuilder: (context, index) {
+          final item = list[index].map((key, value) => MapEntry(key, '${value ?? ''}'));
+          final shop = (list[index]['shops'] as Map?)?['name']?.toString() ?? 'Product Store';
           return GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProductDetails(product: products[index]),
+                  builder: (_) => ProductDetails(product: item),
                 ),
               );
             },
@@ -90,7 +110,7 @@ class _ProductsState extends State<Products> {
                           topRight: Radius.circular(20.0),
                         ),
                         child: Image.asset(
-                          products[index]['image']!,
+                          item['image'] ?? 'assets/images/shirt.jpg',
                           height: 150,
                           width: double.infinity,
                           fit: BoxFit.cover,
@@ -101,7 +121,7 @@ class _ProductsState extends State<Products> {
                         right: 6,
                         child: GestureDetector(
                           onTap: () => setState(
-                            () => FavouritesStore.toggle(products[index]),
+                            () => FavouritesStore.toggle(item),
                           ),
                           child: Container(
                             decoration: const BoxDecoration(
@@ -110,7 +130,7 @@ class _ProductsState extends State<Products> {
                             ),
                             padding: const EdgeInsets.all(7.0),
                             child: Icon(
-                              FavouritesStore.has(products[index])
+                              FavouritesStore.has(item)
                                   ? Icons.favorite
                                   : Icons.favorite_border,
                               color: Colors.white,
@@ -129,7 +149,7 @@ class _ProductsState extends State<Products> {
                       bottom: 8.0,
                     ),
                     child: Text(
-                      products[index]['name']!,
+                      item['name'] ?? 'Product Name',
                       style: GoogleFonts.inknutAntiqua(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -144,7 +164,7 @@ class _ProductsState extends State<Products> {
                       children: [
                         Expanded(
                           child: Text(
-                            products[index]['store']!,
+                            shop,
                             style: GoogleFonts.inknutAntiqua(
                               fontSize: 16.0,
                               color: Colors.white,
@@ -163,7 +183,7 @@ class _ProductsState extends State<Products> {
                       children: [
                         Expanded(
                           child: Text(
-                            products[index]['price']!,
+                            item['price'] ?? 'Product Price',
                             style: GoogleFonts.inknutAntiqua(
                               fontSize: 12.0,
                               color: Colors.white,
@@ -186,9 +206,11 @@ class _ProductsState extends State<Products> {
                 ],
               ),
             ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
+    ),
     );
   }
 }

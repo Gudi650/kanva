@@ -30,3 +30,5 @@ Future<void> main() async {
     ),
   );
 }
+
+SupabaseClient supabase = Supabase.instance.client;
