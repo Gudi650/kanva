@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/services/products_service.dart';
 import '../pages/product_details.dart';
 import '../pages/favourites.dart';
+import 'skeleton.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -61,6 +62,9 @@ class _ProductsState extends State<Products> {
       FutureBuilder<List<Map<String, dynamic>>>(
         future: products,
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SkeletonCards();
+          }
           final list = snapshot.data ?? [];
           return ListView.builder(
         scrollDirection: Axis.horizontal,

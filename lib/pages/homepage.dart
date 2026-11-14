@@ -5,6 +5,7 @@ import 'package:untitled1/pages/profile.dart';
 import 'package:untitled1/pages/categories.dart';
 import 'favourites.dart';
 import '../services/categories_service.dart';
+import '../widgets/skeleton.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -237,6 +238,9 @@ class _HomepageState extends State<Homepage> {
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: categories,
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SkeletonChips();
+                  }
                   final list = snapshot.data ?? [];
                   return Row(
                     children: [
