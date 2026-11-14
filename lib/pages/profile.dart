@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'logout.dart';
+import 'shop/shop_hub.dart';
 
 class AccountActivity extends StatelessWidget {
   const AccountActivity({super.key});
@@ -84,6 +85,20 @@ class AccountActivity extends StatelessWidget {
                     ]),
                   ),
 
+                  const SizedBox(height: 20),
+                  const Text('Shop',
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
+                  const SizedBox(height: 12),
+                  KCard(
+                    padding: EdgeInsets.zero,
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ShopHub())),
+                    child: const ListTile(
+                      leading: Icon(Icons.storefront_outlined, color: KanvaColors.primary),
+                      title: Text('My shop', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: KanvaColors.textDark)),
+                      subtitle: Text('Post products and track sales', style: TextStyle(fontSize: 12, color: KanvaColors.textLight)),
+                      trailing: Icon(Icons.chevron_right, color: KanvaColors.textLight, size: 20),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   const Text('Order History',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
