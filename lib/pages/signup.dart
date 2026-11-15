@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/pages/signin.dart';
 import '../services/auth_service.dart';
+import '../widgets/three_dot_loader.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -12,6 +13,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool isChecked = false;
+  bool _busy = false;
   final _name = TextEditingController();
   final _phone = TextEditingController();
   final _email = TextEditingController();
@@ -307,13 +309,17 @@ class _SignupState extends State<Signup> {
                               height: 50,
 
                               child: ElevatedButton(
-                                onPressed: () => AuthService().signUpWithEmail(
-                                  _email.text.trim(),
-                                  _password.text,
-                                  _name.text.trim(),
-                                  _phone.text.trim(),
-                                  context,
-                                ),
+                                onPressed: _busy ? () {} : () async {
+                                  setState(() => _busy = true);
+                                  await AuthService().signUpWithEmail(
+                                    _email.text.trim(),
+                                    _password.text,
+                                    _name.text.trim(),
+                                    _phone.text.trim(),
+                                    context,
+                                  );
+                                  if (mounted) setState(() => _busy = false);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor: Color.fromRGBO(
@@ -326,7 +332,9 @@ class _SignupState extends State<Signup> {
                                     borderRadius: BorderRadius.circular(60.0),
                                   ),
                                 ),
-                                child: Text(
+                                child: _busy
+                                    ? const ThreeDotLoader(color: Color.fromRGBO(85, 101, 175, 1))
+                                    : Text(
                                   'Sign Up',
                                   style: GoogleFonts.inknutAntiqua(
                                     color: Colors.black,

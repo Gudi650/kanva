@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled1/pages/signup.dart';
 import '../services/auth_service.dart';
+import '../widgets/three_dot_loader.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -12,6 +13,7 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   bool isChecked = false;
+  bool _busy = false;
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -254,11 +256,15 @@ class _SigninState extends State<Signin> {
                               height: 50,
 
                               child: ElevatedButton(
-                                onPressed: () => AuthService().signInWithEmail(
-                                  _email.text.trim(),
-                                  _password.text,
-                                  context,
-                                ),
+                                onPressed: _busy ? () {} : () async {
+                                  setState(() => _busy = true);
+                                  await AuthService().signInWithEmail(
+                                    _email.text.trim(),
+                                    _password.text,
+                                    context,
+                                  );
+                                  if (mounted) setState(() => _busy = false);
+                                },
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor: Color.fromRGBO(
@@ -271,7 +277,9 @@ class _SigninState extends State<Signin> {
                                     borderRadius: BorderRadius.circular(60.0),
                                   ),
                                 ),
-                                child: Text(
+                                child: _busy
+                                    ? const ThreeDotLoader(color: Color.fromRGBO(85, 101, 175, 1))
+                                    : Text(
                                   'Login',
                                   style: GoogleFonts.inknutAntiqua(
                                     color: Colors.black,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ThreeDotLoader extends StatefulWidget {
-  const ThreeDotLoader({super.key});
+  final Color color;
+  const ThreeDotLoader({super.key, this.color = const Color.fromRGBO(255, 251, 205, 1)});
 
   @override
   State<ThreeDotLoader> createState() => _ThreeDotLoaderState();
@@ -37,8 +38,8 @@ class _ThreeDotLoaderState extends State<ThreeDotLoader>
       child: Container(
         width: 8,
         height: 8,
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(255, 251, 205, 1.0),
+        decoration: BoxDecoration(
+          color: widget.color,
           shape: BoxShape.circle,
         ),
       ),
