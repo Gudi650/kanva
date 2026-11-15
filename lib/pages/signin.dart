@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled1/widgets/navigationBar.dart';
 import 'package:untitled1/pages/signup.dart';
+import '../services/auth_service.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -12,6 +12,15 @@ class Signin extends StatefulWidget {
 
 class _SigninState extends State<Signin> {
   bool isChecked = false;
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +105,7 @@ class _SigninState extends State<Signin> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              controller: _email,
                               decoration: InputDecoration(
                                 hintText: 'example@gmail.com',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -145,6 +155,8 @@ class _SigninState extends State<Signin> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              controller: _password,
+                              obscureText: true,
                               decoration: InputDecoration(
                                 hintText: 'password123',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -242,14 +254,11 @@ class _SigninState extends State<Signin> {
                               height: 50,
 
                               child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Navigation(),
-                                    ),
-                                  );
-                                },
+                                onPressed: () => AuthService().signInWithEmail(
+                                  _email.text.trim(),
+                                  _password.text,
+                                  context,
+                                ),
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor: Color.fromRGBO(

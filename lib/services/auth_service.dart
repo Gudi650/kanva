@@ -3,6 +3,7 @@ import '../main.dart';
 import 'package:flutter/material.dart';
 import '../pages/homepage.dart';
 import '../pages/signin.dart';
+import '../widgets/navigationBar.dart';
 
 class AuthService {
 
@@ -81,7 +82,7 @@ class AuthService {
           ],
         ));
         if(user != null){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Navigation()));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Failed to sign in')),
