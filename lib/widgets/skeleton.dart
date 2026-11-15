@@ -63,18 +63,30 @@ class SkeletonCards extends StatelessWidget {
   }
 }
 
-Widget _box(Animation<double> fade, double width, double height, double radius) {
+Widget _box(Animation<double> fade, double width, double height, double radius, [Color color = KanvaColors.divider]) {
   return FadeTransition(
     opacity: fade,
     child: Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: KanvaColors.divider,
+        color: color,
         borderRadius: BorderRadius.circular(radius),
       ),
     ),
   );
+}
+
+class SkeletonBar extends StatelessWidget {
+  final double width;
+  final double height;
+  final Color color;
+  const SkeletonBar({super.key, required this.width, this.height = 14, this.color = KanvaColors.divider});
+
+  @override
+  Widget build(BuildContext context) {
+    return _Pulse(builder: (fade) => _box(fade, width, height, 8, color));
+  }
 }
 
 class _Pulse extends StatefulWidget {

@@ -3,6 +3,7 @@ import '../theme/theme.dart';
 import 'logout.dart';
 import 'shop/shop_hub.dart';
 import '../services/profile_service.dart';
+import '../widgets/skeleton.dart';
 
 class AccountActivity extends StatefulWidget {
   const AccountActivity({super.key});
@@ -14,6 +15,7 @@ class AccountActivity extends StatefulWidget {
 class _AccountActivityState extends State<AccountActivity> {
 
   Map<String, dynamic> _profile = {};
+  bool _loading = true;
 
   @override
   void initState() {
@@ -23,7 +25,7 @@ class _AccountActivityState extends State<AccountActivity> {
 
   Future<void> _load() async {
     final row = await ProfileService().getProfile();
-    if (mounted) setState(() => _profile = row);
+    if (mounted) setState(() { _profile = row; _loading = false; });
   }
 
 
@@ -64,11 +66,17 @@ class _AccountActivityState extends State<AccountActivity> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text('${_profile['full_name'] ?? ''}',
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text('${_profile['email'] ?? ''}',
-                      style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                  if (_loading) ...[
+                    const SkeletonBar(width: 160, height: 18, color: KanvaColors.cream),
+                    const SizedBox(height: 8),
+                    const SkeletonBar(width: 120, height: 12, color: KanvaColors.cream),
+                  ] else ...[
+                    Text('${_profile['full_name'] ?? ''}',
+                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 4),
+                    Text('${_profile['email'] ?? ''}',
+                        style: const TextStyle(color: Colors.white70, fontSize: 13)),
+                  ],
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -95,14 +103,24 @@ class _AccountActivityState extends State<AccountActivity> {
                   const SizedBox(height: 12),
                   KCard(
                     padding: EdgeInsets.zero,
-                    child: Column(children: [
+                    child: _loading
+                        ? Column(children: [
+                            for (var i = 0; i < 4; i++) ...[
+                              const ListTile(
+                                leading: CircleAvatar(radius: 11, backgroundColor: KanvaColors.divider),
+                                title: Align(alignment: Alignment.centerLeft, child: SkeletonBar(width: 150, height: 14)),
+                              ),
+                              if (i < 3) const Divider(height: 1, color: KanvaColors.divider),
+                            ],
+                          ])
+                        : Column(children: [
                       _InfoTile(icon: Icons.person_outline, label: 'Full Name', value: '${_profile['full_name'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
                       _InfoTile(icon: Icons.email_outlined, label: 'Email', value: '${_profile['email'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
                       _InfoTile(icon: Icons.phone_outlined, label: 'Phone', value: '${_profile['phone'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
-                      _InfoTile(icon: Icons.location_on_outlined, label: 'Location', value: '${_profile['location'] ?? ''}'),
+                      _InfoTile(icon: Icons.location_on_outlined, label: 'Location', value: '${_profile['location'] ?? 'Location Adress'}'),
                     ]),
                   ),
 
