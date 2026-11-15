@@ -158,6 +158,7 @@ class _SigninState extends State<Signin> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              key: ValueKey(_show),
                               controller: _password,
                               obscureText: !_show,
                               decoration: InputDecoration(
@@ -168,9 +169,9 @@ class _SigninState extends State<Signin> {
                                   fontWeight: FontWeight.w400,
                                 ),
 
-                                suffixIcon: GestureDetector(
-                                  onTap: () => setState(() => _show = !_show),
-                                  child: Icon(_show ? Icons.visibility : Icons.visibility_off, color: Colors.grey[600], size: 20),
+                                suffixIcon: IconButton(
+                                  onPressed: () => setState(() => _show = !_show),
+                                  icon: Icon(_show ? Icons.visibility : Icons.visibility_off, color: Colors.grey[600], size: 20),
                                 ),
 
                                 prefixIcon: Padding(

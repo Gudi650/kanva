@@ -30,6 +30,13 @@ class _SignupState extends State<Signup> {
     super.dispose();
   }
 
+  String? _tzPhone(String raw) {
+    var p = raw.replaceAll(RegExp(r'\s'), '');
+    if (p.startsWith('0')) p = '+255${p.substring(1)}';
+    if (p.startsWith('+255') && p.length == 13) return p;
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -305,12 +312,19 @@ class _SignupState extends State<Signup> {
 
                               child: ElevatedButton(
                                 onPressed: _busy ? () {} : () async {
+                                  final phone = _tzPhone(_phone.text);
+                                  if (phone == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Enter a valid Tanzania phone number')),
+                                    );
+                                    return;
+                                  }
                                   setState(() => _busy = true);
                                   await AuthService().signUpWithEmail(
                                     _email.text.trim(),
                                     _password.text,
                                     _name.text.trim(),
-                                    _phone.text.trim(),
+                                    phone,
                                     context,
                                   );
                                   if (mounted) setState(() => _busy = false);
