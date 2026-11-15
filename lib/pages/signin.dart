@@ -14,6 +14,7 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   bool isChecked = false;
   bool _busy = false;
+  bool _show = false;
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -158,7 +159,7 @@ class _SigninState extends State<Signin> {
 
                             TextField(
                               controller: _password,
-                              obscureText: true,
+                              obscureText: !_show,
                               decoration: InputDecoration(
                                 hintText: 'password123',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -167,13 +168,9 @@ class _SigninState extends State<Signin> {
                                   fontWeight: FontWeight.w400,
                                 ),
 
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 12.0),
-                                  child: Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey[600],
-                                    size: 20,
-                                  ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () => setState(() => _show = !_show),
+                                  child: Icon(_show ? Icons.visibility : Icons.visibility_off, color: Colors.grey[600], size: 20),
                                 ),
 
                                 prefixIcon: Padding(

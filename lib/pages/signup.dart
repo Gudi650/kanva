@@ -14,6 +14,8 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   bool isChecked = false;
   bool _busy = false;
+  bool _showPassword = false;
+  bool _showConfirm = false;
   final _name = TextEditingController();
   final _phone = TextEditingController();
   final _email = TextEditingController();
@@ -171,7 +173,7 @@ class _SignupState extends State<Signup> {
 
                             TextField(
                               controller: _password,
-                              obscureText: true,
+                              obscureText: !_showPassword,
                               decoration: InputDecoration(
                                 hintText: 'password123',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -180,13 +182,9 @@ class _SignupState extends State<Signup> {
                                   fontWeight: FontWeight.w400,
                                 ),
 
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 12.0),
-                                  child: Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey[600],
-                                    size: 20,
-                                  ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () => setState(() => _showPassword = !_showPassword),
+                                  child: Icon(_showPassword ? Icons.visibility : Icons.visibility_off, color: Colors.grey[600], size: 20),
                                 ),
 
                                 prefixIcon: Padding(
@@ -229,6 +227,7 @@ class _SignupState extends State<Signup> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              obscureText: !_showConfirm,
                               decoration: InputDecoration(
                                 hintText: 'password123',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -237,13 +236,9 @@ class _SignupState extends State<Signup> {
                                   fontWeight: FontWeight.w400,
                                 ),
 
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 12.0),
-                                  child: Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey[600],
-                                    size: 20,
-                                  ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () => setState(() => _showConfirm = !_showConfirm),
+                                  child: Icon(_showConfirm ? Icons.visibility : Icons.visibility_off, color: Colors.grey[600], size: 20),
                                 ),
 
                                 prefixIcon: Padding(
