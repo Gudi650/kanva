@@ -2,9 +2,30 @@ import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 import 'logout.dart';
 import 'shop/shop_hub.dart';
+import '../services/profile_service.dart';
 
-class AccountActivity extends StatelessWidget {
+class AccountActivity extends StatefulWidget {
   const AccountActivity({super.key});
+
+  @override
+  State<AccountActivity> createState() => _AccountActivityState();
+}
+
+class _AccountActivityState extends State<AccountActivity> {
+
+  Map<String, dynamic> _profile = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final row = await ProfileService().getProfile();
+    if (mounted) setState(() => _profile = row);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +64,11 @@ class AccountActivity extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  const Text('Godluck Mwambe',
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text('${_profile['full_name'] ?? ''}',
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  const Text('godluck@example.com',
-                      style: TextStyle(color: Colors.white70, fontSize: 13)),
+                  Text('${_profile['email'] ?? ''}',
+                      style: const TextStyle(color: Colors.white70, fontSize: 13)),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -75,13 +96,13 @@ class AccountActivity extends StatelessWidget {
                   KCard(
                     padding: EdgeInsets.zero,
                     child: Column(children: [
-                      _InfoTile(icon: Icons.person_outline, label: 'Full Name', value: 'Godluck Mwambe'),
+                      _InfoTile(icon: Icons.person_outline, label: 'Full Name', value: '${_profile['full_name'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
-                      _InfoTile(icon: Icons.email_outlined, label: 'Email', value: 'godluck@example.com'),
+                      _InfoTile(icon: Icons.email_outlined, label: 'Email', value: '${_profile['email'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
-                      _InfoTile(icon: Icons.phone_outlined, label: 'Phone', value: '+255 712 345 678'),
+                      _InfoTile(icon: Icons.phone_outlined, label: 'Phone', value: '${_profile['phone'] ?? ''}'),
                       const Divider(height: 1, color: KanvaColors.divider),
-                      _InfoTile(icon: Icons.location_on_outlined, label: 'Location', value: 'Dar es Salaam, Tanzania'),
+                      _InfoTile(icon: Icons.location_on_outlined, label: 'Location', value: '${_profile['location'] ?? ''}'),
                     ]),
                   ),
 

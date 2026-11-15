@@ -6,6 +6,7 @@ import 'package:untitled1/pages/categories.dart';
 import 'favourites.dart';
 import '../services/categories_service.dart';
 import '../widgets/skeleton.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
