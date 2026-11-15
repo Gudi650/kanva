@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
-import 'signin.dart';
+import '../services/auth_service.dart';
 
 class Logout extends StatelessWidget {
   const Logout({super.key});
@@ -34,11 +34,7 @@ class Logout extends StatelessWidget {
               KButton(
                 label: 'Log out',
                 color: KanvaColors.error,
-                onTap: () => Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const Signin()),
-                  (_) => false,
-                ),
+                onTap: () => AuthService().signOut(context),
               ),
               const SizedBox(height: 12),
               KButton(label: 'Stay', onTap: () => Navigator.pop(context)),

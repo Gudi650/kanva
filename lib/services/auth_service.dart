@@ -118,15 +118,12 @@ class AuthService {
     try{
       await supabase.auth.signOut();
       
-      if(context.mounted){
-        showDialog(context: context, builder: (context) => AlertDialog(
-          title: Text('Logged out'),
-          content: Text('You have been logged out'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text('OK')),
-          ],
-        ));
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Signin()));
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const Signin()),
+          (_) => false,
+        );
       }
     }
     on PostgrestException catch (e) {
