@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
+import 'favourites.dart';
 import 'product_details.dart';
 import '../services/categories_service.dart';
 import '../widgets/skeleton.dart';
@@ -157,44 +159,72 @@ class _CategoryItemsState extends State<_CategoryItems> {
               }
               final list = snapshot.data ?? [];
               if (list.isEmpty) return const Center(child: Text('No products found'));
-              return Column(
-                children: [
-                  for (final p in list)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: KCard(
-                        padding: const EdgeInsets.all(12),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => ProductDetails(
-                            product: p.map((key, value) => MapEntry(key, '${value ?? ''}')),
-                          )),
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset('assets/images/shirt.jpg', width: 72, height: 72, fit: BoxFit.cover),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${p['name'] ?? ''}', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: KanvaColors.textDark)),
-                                  const SizedBox(height: 4),
-                                  Text((p['shops'] as Map?)?['name']?.toString() ?? '', style: const TextStyle(fontSize: 12, color: KanvaColors.textLight)),
-                                  const SizedBox(height: 6),
-                                  Text('${p['price'] ?? ''}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: KanvaColors.primary)),
-                                ],
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.68,
+                ),
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  final p = list[index];
+                  final item = p.map((key, value) => MapEntry(key, '${value ?? ''}'));
+                      final shop = (p['shops'] as Map?)?['name']?.toString() ?? '';
+                      return GestureDetector(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetails(product: item))),
+                        child: Container(
+                          width: 190,
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(85, 101, 175, 1.0),
+                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                            border: Border.all(color: Colors.black, width: 0.1),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                  child: Image.asset(item['image'] ?? 'assets/images/shirt.jpg', height: 150, width: double.infinity, fit: BoxFit.cover),
+                                ),
+                                Positioned(
+                                  top: 6, right: 6,
+                                  child: GestureDetector(
+                                    onTap: () => setState(() => FavouritesStore.toggle(item)),
+                                    child: Container(
+                                      decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.pinkAccent),
+                                      padding: const EdgeInsets.all(7),
+                                      child: Icon(FavouritesStore.has(item) ? Icons.favorite : Icons.favorite_border, color: Colors.white, size: 20),
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 6, 12, 2),
+                                child: Text(item['name'] ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.inknutAntiqua(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
                               ),
-                            ),
-                            const Icon(Icons.chevron_right, color: KanvaColors.textLight),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: Row(children: [
+                                  Expanded(child: Text(shop, style: GoogleFonts.inknutAntiqua(fontSize: 16, color: Colors.white), overflow: TextOverflow.ellipsis)),
+                                  const Icon(Icons.store, color: Colors.white, size: 24),
+                                ]),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 2, 12, 2),
+                                child: Row(children: [
+                                  Expanded(child: Text(item['price'] ?? '', style: GoogleFonts.inknutAntiqua(fontSize: 12, color: Colors.white), overflow: TextOverflow.ellipsis)),
+                                  const Icon(Icons.local_offer, color: Colors.white, size: 16),
+                                ]),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                ],
+                      );
+                },
               );
             },
           ),
