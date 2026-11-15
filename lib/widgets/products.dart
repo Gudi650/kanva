@@ -33,24 +33,30 @@ class _ProductsState extends State<Products> {
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: products,
       builder: (context, snapshot) {
+
+        //keep the skeleton cards while the products are loading
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SkeletonCards();
         }
+
         final list = snapshot.data ?? [];
+
         if (widget.category != 'All Items') {
           final filtered = list.where((row) => _categoryOf(row) == widget.category).toList();
           return SizedBox(height: 276, width: double.infinity, child: _cards(filtered));
         }
         final names = <String>[];
+        //get the unique categories
         for (final row in list) {
           final name = _categoryOf(row);
           if (name.isNotEmpty && !names.contains(name)) names.add(name);
         }
+
         return Column(
           children: [
             for (final name in names) ...[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(name, style: GoogleFonts.inknutAntiqua(fontSize: 18, letterSpacing: 1)),
@@ -80,13 +86,13 @@ class _ProductsState extends State<Products> {
               );
             },
             child: Container(
-              width: 200,
+              width: 190,
               margin: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(85, 101, 175, 1.0),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(0.0),
-                  bottomRight: Radius.circular(20.0),
+                  bottomRight: Radius.circular(0.0),
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0),
                 ),
@@ -153,7 +159,7 @@ class _ProductsState extends State<Products> {
                     child: Text(
                       item['name'] ?? 'Product Name',
                       style: GoogleFonts.inknutAntiqua(
-                        fontSize: 20.0,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         letterSpacing: 2.0,
