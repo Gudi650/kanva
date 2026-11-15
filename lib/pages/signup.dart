@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-//import 'package:untitled1/pages/homepage.dart' show Homepage;
 import 'package:untitled1/pages/signin.dart';
+import '../services/auth_service.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -12,6 +12,19 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool isChecked = false;
+  final _name = TextEditingController();
+  final _phone = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _phone.dispose();
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +89,15 @@ class _SignupState extends State<Signup> {
 
                             const SizedBox(height: 20.0),
 
+                            _label('Full name'),
+                            const SizedBox(height: 12),
+                            _field(_name, 'Your name', Icons.person_outline),
+                            const SizedBox(height: 12),
+                            _label('Phone'),
+                            const SizedBox(height: 12),
+                            _field(_phone, '+255 712 345 678', Icons.phone_outlined, type: TextInputType.phone),
+                            const SizedBox(height: 12),
+
                             Padding(
                               padding: const EdgeInsets.only(left: 12.0),
                               child: Row(
@@ -96,6 +118,7 @@ class _SignupState extends State<Signup> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              controller: _email,
                               decoration: InputDecoration(
                                 hintText: 'example@gmail.com',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -145,6 +168,8 @@ class _SignupState extends State<Signup> {
                             const SizedBox(height: 12.0),
 
                             TextField(
+                              controller: _password,
+                              obscureText: true,
                               decoration: InputDecoration(
                                 hintText: 'password123',
                                 hintStyle: GoogleFonts.inknutAntiqua(
@@ -282,14 +307,13 @@ class _SignupState extends State<Signup> {
                               height: 50,
 
                               child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Signin(),
-                                    ),
-                                  );
-                                },
+                                onPressed: () => AuthService().signUpWithEmail(
+                                  _email.text.trim(),
+                                  _password.text,
+                                  _name.text.trim(),
+                                  _phone.text.trim(),
+                                  context,
+                                ),
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor: Color.fromRGBO(
@@ -451,4 +475,25 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
+
+  Widget _label(String text) => Padding(
+    padding: const EdgeInsets.only(left: 12),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Text(text, style: GoogleFonts.inknutAntiqua(fontSize: 16)),
+    ),
+  );
+
+  Widget _field(TextEditingController controller, String hint, IconData icon, {TextInputType? type}) => TextField(
+    controller: controller,
+    keyboardType: type,
+    decoration: InputDecoration(
+      hintText: hint,
+      hintStyle: GoogleFonts.inknutAntiqua(fontSize: 14, color: Colors.black54),
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(60), borderSide: BorderSide.none),
+      filled: true,
+      fillColor: const Color.fromRGBO(245, 245, 245, 1),
+    ),
+  );
 }

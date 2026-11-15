@@ -7,12 +7,12 @@ import '../pages/signin.dart';
 class AuthService {
 
   //method for user to signup with email and password
-  Future<void> signUpWithEmail(String email, String password, BuildContext context) async {
+  Future<void> signUpWithEmail(String email, String password, String fullName, String phone, BuildContext context) async {
     try{
       final AuthResponse res = await supabase.auth.signUp(
         email: email,
         password: password,
-        //data: {'full_name': fullName}
+        data: {'full_name': fullName, 'phone': phone}
       );
 
       final User? user = res.user;
