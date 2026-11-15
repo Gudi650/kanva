@@ -25,7 +25,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   //selected category index
-  int selectedCategoryIndex = 0;
+  int selectedCategoryIndex = -1;
   String selectedCategory = 'All Items';
 
   @override
@@ -244,35 +244,20 @@ class _HomepageState extends State<Homepage> {
                   final list = snapshot.data ?? [];
                   return Row(
                     children: [
+                      GestureDetector(
+                        onTap: () => setState(() {
+                          selectedCategoryIndex = -1;
+                          selectedCategory = 'All Items';
+                        }),
+                        child: _chip('All Items', selectedCategoryIndex == -1),
+                      ),
                       for (var i = 0; i < list.length; i++)
                         GestureDetector(
                           onTap: () => setState(() {
                             selectedCategoryIndex = i;
                             selectedCategory = list[i]['name'] as String;
                           }),
-                          child: Container(
-                            height: 36,
-                            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: selectedCategoryIndex == i
-                                  ? const Color.fromRGBO(85, 101, 175, 1.0)
-                                  : const Color.fromRGBO(255, 251, 205, 1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Center(
-                              child: Text(
-                                list[i]['name'] as String,
-                                style: GoogleFonts.inknutAntiqua(
-                                  color: selectedCategoryIndex == i
-                                      ? const Color.fromRGBO(255, 251, 205, 1)
-                                      : Colors.black,
-                                  fontSize: 14,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: _chip(list[i]['name'] as String, selectedCategoryIndex == i),
                         ),
                     ],
                   );
@@ -282,7 +267,7 @@ class _HomepageState extends State<Homepage> {
 
             SizedBox(height: 10.0),
 
-            //the name being displayed
+            if (selectedCategory != 'All Items')
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -319,11 +304,31 @@ class _HomepageState extends State<Homepage> {
             SizedBox(height: 10.0),
 
             //cards for the products
-            const Products(),
+            Products(category: selectedCategory),
             const SizedBox(height: 100),
           ],
         ),
       ),
     );
   }
+
+  Widget _chip(String label, bool selected) => Container(
+    height: 36,
+    margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    decoration: BoxDecoration(
+      color: selected ? const Color.fromRGBO(85, 101, 175, 1.0) : const Color.fromRGBO(255, 251, 205, 1),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Center(
+      child: Text(
+        label,
+        style: GoogleFonts.inknutAntiqua(
+          color: selected ? const Color.fromRGBO(255, 251, 205, 1) : Colors.black,
+          fontSize: 14,
+          letterSpacing: 1,
+        ),
+      ),
+    ),
+  );
 }

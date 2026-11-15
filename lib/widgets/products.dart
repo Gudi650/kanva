@@ -6,42 +6,14 @@ import '../pages/favourites.dart';
 import 'skeleton.dart';
 
 class Products extends StatefulWidget {
-  const Products({super.key});
+  final String category;
+  const Products({super.key, this.category = 'All Items'});
 
   @override
   State<Products> createState() => _ProductsState();
 }
 
 class _ProductsState extends State<Products> {
-  /*
-  //list of the products to be displayed (they conatins the name, price and image of the product)
-  final List<Map<String, String>> products = [
-    {
-      'name': 'Product 1',
-      'price': 'Tsh 19.99',
-      'store': 'Kanva',
-      'image': 'assets/images/shirt.jpg',
-    },
-    {
-      'name': 'Product 2',
-      'price': 'Tsh 29.99',
-      'store': 'Kanva',
-      'image': 'assets/images/shirt.jpg',
-    },
-    {
-      'name': 'Product 3',
-      'price': 'Tsh 39.99',
-      'store': 'Kanva',
-      'image': 'assets/images/shirt.jpg',
-    },
-    {
-      'name': 'Product 4',
-      'price': 'Tsh 49.99',
-      'store': 'Kanva',
-      'image': 'assets/images/shirt.jpg',
-    },
-  ];
-  */
 
   //object initialisation of the products service
   final ProductsService productsService = ProductsService();
@@ -53,20 +25,46 @@ class _ProductsState extends State<Products> {
     products = productsService.getAllProducts();
   }
 
+  String _categoryOf(Map<String, dynamic> row) =>
+      (row['categories'] as Map?)?['name']?.toString() ?? '';
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 276,
-      width: double.infinity,
-      child: 
-      FutureBuilder<List<Map<String, dynamic>>>(
-        future: products,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SkeletonCards();
-          }
-          final list = snapshot.data ?? [];
-          return ListView.builder(
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: products,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SkeletonCards();
+        }
+        final list = snapshot.data ?? [];
+        if (widget.category != 'All Items') {
+          final filtered = list.where((row) => _categoryOf(row) == widget.category).toList();
+          return SizedBox(height: 276, width: double.infinity, child: _cards(filtered));
+        }
+        final names = <String>[];
+        for (final row in list) {
+          final name = _categoryOf(row);
+          if (name.isNotEmpty && !names.contains(name)) names.add(name);
+        }
+        return Column(
+          children: [
+            for (final name in names) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(name, style: GoogleFonts.inknutAntiqua(fontSize: 18, letterSpacing: 1)),
+                ),
+              ),
+              SizedBox(height: 276, child: _cards(list.where((row) => _categoryOf(row) == name).toList())),
+            ],
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _cards(List<Map<String, dynamic>> list) => ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: list.length,
         itemBuilder: (context, index) {
@@ -213,8 +211,4 @@ class _ProductsState extends State<Products> {
             );
           },
         );
-      },
-    ),
-    );
-  }
 }
