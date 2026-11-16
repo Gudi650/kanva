@@ -18,7 +18,7 @@ class FavouriteService {
     try {
       //get the favourites of the logged in user
       final favourites = await supabase.from('favourites')
-                                        .select('*,products(name)')
+                                        .select('*,products(*,shops(name))')
                                         .eq('user_id', UserId.getLoggedInUserId());
       if (favourites.isNotEmpty) {
         return List<Map<String, dynamic>>.from(favourites);
@@ -42,18 +42,6 @@ class FavouriteService {
       throw Exception('User is not logged in');
     }
 
-    //check if the product exists
-    final product = await supabase.from('products').select('id').eq('id', productId);
-    if (product.isEmpty) {
-      throw Exception('Product not found');
-    }
-
-    //check if the product is already in the favourites of the logged in user
-    final favourites = await getLoggedInUserFavourites();
-    if (favourites.any((element) => element['product_id'] == productId)) {
-      throw Exception('Product is already in the favourites');
-    }
-
     try {
       //add the product to the favourites of the logged in user
       await supabase.from('favourites').insert({
@@ -73,12 +61,6 @@ class FavouriteService {
     //check if the user is logged in and has an ID
     if (UserId.getLoggedInUserId().isEmpty) {
       throw Exception('User is not logged in');
-    }
-
-    //check if the product is in the favourites of the logged in user
-    final favourites = await getLoggedInUserFavourites();
-    if (favourites.isEmpty) {
-      throw Exception('Product is not in the favourites');
     }
 
     try {
