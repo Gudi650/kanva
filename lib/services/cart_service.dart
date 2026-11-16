@@ -4,60 +4,46 @@ import 'user_id.dart';
 
 class CartService {
 
-    //method to get the cart items of the logged in user
-    Future <List<Map<String, dynamic>>> getCartItems () async{
-
-        //get the id of the logged in user
-        String loggedInUserId = UserId.getLoggedInUserId();
-
-        //check if the user is logged in and has an ID
-        if (loggedInUserId.isEmpty) {
-          throw Exception('User is not logged in');
-        }
-
-        try {
-
-          final cartItems = await supabase.from('cart_item').select('*').eq('user_id', loggedInUserId);
-          if (cartItems.isNotEmpty) {
-            return List<Map<String, dynamic>>.from(cartItems);
-          }
-
-          return [];
-
-        } on PostgrestException catch (e) {
-          throw Exception(e.message.toString());
-        } catch (e) {
-          throw Exception(e.toString());
-        }
-          
-    }
-
-    //method to add items in the cart
-    Future <List<Map<String, dynamic>>> addCartItems(List<Map<String, dynamic>> cartItems) async{
-
-      //get the id of the logged in user
-      String loggedInUserId = UserId.getLoggedInUserId();
-
-      //check if the user is logged in and has an ID
-      if (loggedInUserId.isEmpty) {
-        throw Exception('User is not logged in');
-      }
-
-      try {
-        //add the cart items to the cart of the logged in user
-        final newCartItems = await supabase.from('cart_item').insert(cartItems).eq('user_id', loggedInUserId);
-        if (newCartItems.isNotEmpty) {
-          return List<Map<String, dynamic>>.from(newCartItems);
-        }
-      } on PostgrestException catch (e) {
-        throw Exception(e.message.toString());
-      } catch (e) {
-        throw Exception(e.toString());
-      }
-      return [];
+  String get _userId {
+    final id = UserId.getLoggedInUserId();
+    if (id.isEmpty) throw Exception('User is not logged in');
+    return id;
   }
 
+  Future<List<Map<String, dynamic>>> getCartItems() async {
+    try {
+      final rows = await supabase
+          .from('cart_items')
+          .select('*,products(*,shops(name))')
+          .eq('user_id', _userId);
+      return List<Map<String, dynamic>>.from(rows);
+    } on PostgrestException catch (e) {
+      throw Exception(e.message);
+    }
+  }
 
+  Future<void> setQty(String productId, int qty) async {
+    //check if the quantity is less than 1
+    if (qty < 1) {
+      await removeCartItem(productId);
+      return;
+    }
+    try {
+      await supabase.from('cart_items').upsert({
+        'user_id': _userId,
+        'product_id': productId,
+        'qty': qty,
+      }, onConflict: 'user_id,product_id');
+    } on PostgrestException catch (e) {
+      throw Exception(e.message);
+    }
+  }
 
-
+  Future<void> removeCartItem(String productId) async {
+    try {
+      await supabase.from('cart_items').delete().eq('user_id', _userId).eq('product_id', productId);
+    } on PostgrestException catch (e) {
+      throw Exception(e.message);
+    }
+  }
 }
