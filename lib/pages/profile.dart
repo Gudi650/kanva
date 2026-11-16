@@ -138,7 +138,9 @@ class _AccountActivityState extends State<AccountActivity> {
                       trailing: Icon(Icons.chevron_right, color: KanvaColors.textLight, size: 20),
                     ),
                   ),
+
                   const SizedBox(height: 20),
+                  
                   const Text('Order History',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: KanvaColors.textDark)),
                   const SizedBox(height: 12),
