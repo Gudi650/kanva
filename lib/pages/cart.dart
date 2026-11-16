@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
+import '../services/cart_service.dart';
 import '../widgets/add_item.dart';
+import '../widgets/skeleton.dart';
 import 'checkout.dart';
 
 
@@ -13,14 +15,31 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  final List<Map<String, dynamic>> _items = [
-    {'name': 'Product 1', 'store': 'Kanva', 'price': 19.99, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
-    {'name': 'Product 2', 'store': 'Kanva', 'price': 29.99, 'qty': 1, 'image': 'assets/images/shirt.jpg'},
-    {'name': 'Product 3', 'store': 'Kanva', 'price': 39.99, 'qty': 2, 'image': 'assets/images/shirt.jpg'},
-  ];
+  final _service = CartService();
+  List<Map<String, dynamic>> _items = [];
+  bool _loading = true;
 
-  double get _subtotal => _items.fold(0, (sum, i) => sum + (i['price'] as double) * (i['qty'] as int));
-  int get _count => _items.fold(0, (sum, i) => sum + (i['qty'] as int));
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final rows = await _service.getCartItems();
+      if (mounted) setState(() { _items = rows; _loading = false; });
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Map _product(Map row) => (row['products'] as Map?) ?? {};
+  double _price(Map row) => double.tryParse('${_product(row)['price']}') ?? 0;
+  int _qty(Map row) => int.tryParse('${row['qty']}') ?? 1;
+
+  double get _subtotal => _items.fold(0, (sum, i) => sum + _price(i) * _qty(i));
+  int get _count => _items.fold(0, (sum, i) => sum + _qty(i));
 
   String _tsh(double v) => 'Tsh ${v.toStringAsFixed(2)}';
 
@@ -30,7 +49,18 @@ class _CartState extends State<Cart> {
     return Scaffold(
       backgroundColor: KanvaColors.background,
       appBar: const KAppBar(title: 'Kanva'),
-      body: Stack(
+      body: _loading
+          ? ListView(
+              padding: const EdgeInsets.all(20),
+              children: const [
+                SkeletonBar(width: double.infinity, height: 96),
+                SizedBox(height: 12),
+                SkeletonBar(width: double.infinity, height: 96),
+                SizedBox(height: 12),
+                SkeletonBar(width: double.infinity, height: 96),
+              ],
+            )
+          : Stack(
         children: [
           _items.isEmpty ? _empty() : _list(bottom),
           if (_items.isNotEmpty)
@@ -75,32 +105,32 @@ class _CartState extends State<Cart> {
   Widget _list(double bottom) => ListView.separated(
     padding: EdgeInsets.fromLTRB(20, 12, 20, bottom + 230),
     itemCount: _items.length,
-    separatorBuilder: (_, __) => const SizedBox(height: 12),
+    separatorBuilder: (_, _) => const SizedBox(height: 12),
     itemBuilder: (_, i) {
       final item = _items[i];
+      final product = _product(item);
+      final id = '${item['product_id']}';
       return KCard(
         padding: const EdgeInsets.all(12),
         child: Row(children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.asset(item['image'] as String, width: 84, height: 84, fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                width: 84, height: 84, color: KanvaColors.inputBg,
-                child: const Icon(Icons.checkroom, color: KanvaColors.primary),
-              ),
-            ),
+            child: Image.asset('assets/images/shirt.jpg', width: 84, height: 84, fit: BoxFit.cover),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(item['name'] as String, style: GoogleFonts.inknutAntiqua(fontSize: 14, color: KanvaColors.textDark)),
+              Text('${product['name'] ?? ''}', style: GoogleFonts.inknutAntiqua(fontSize: 14, color: KanvaColors.textDark)),
               const SizedBox(height: 4),
-              Text(_tsh(item['price'] as double), style: GoogleFonts.inknutAntiqua(fontSize: 13, color: KanvaColors.primary)),
+              Text(_tsh(_price(item)), style: GoogleFonts.inknutAntiqua(fontSize: 13, color: KanvaColors.primary)),
               const SizedBox(height: 8),
               Row(children: [
 
                 GestureDetector(
-                  onTap: () => setState(() => _items.removeAt(i)),
+                  onTap: () async {
+                    await _service.removeCartItem(id);
+                    await _load();
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(color: KanvaColors.error.withValues(alpha: 0.12), shape: BoxShape.circle),
@@ -110,15 +140,12 @@ class _CartState extends State<Cart> {
 
                 const Spacer(),
                 AddItem(
-                  count: item['qty'] as int,
+                  count: _qty(item),
                   min: 0,
-                  onChanged: (n) => setState(() {
-                    if (n < 1) {
-                      _items.removeAt(i);
-                    } else {
-                      item['qty'] = n;
-                    }
-                  }),
+                  onChanged: (n) async {
+                    await _service.setQty(id, n);
+                    await _load();
+                  },
                 ),
               ]),
             ]),
