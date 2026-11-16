@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/theme.dart';
 import '../widgets/add_item.dart';
-import 'favourites.dart';
+import '../services/favourite_service.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map<String, String> product;
@@ -17,7 +17,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   int _qty = 1;
   int _color = 0;
   bool _more = false;
-  late bool _liked;
+  final _favs = FavouriteService();
+  bool _liked = false;
   final _sizes = const ['S', 'M', 'L', 'XL'];
   final _colors = const [
     KanvaColors.cream,
@@ -29,7 +30,26 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   void initState() {
     super.initState();
-    _liked = FavouritesStore.has(widget.product);
+    _loadLiked();
+  }
+
+  Future<void> _loadLiked() async {
+    try {
+      final rows = await _favs.getLoggedInUserFavourites();
+      final id = widget.product['id'] ?? '';
+      if (mounted) setState(() => _liked = rows.any((e) => '${e['product_id']}' == id));
+    } catch (_) {}
+  }
+
+  Future<void> _toggleFav() async {
+    final id = widget.product['id'] ?? '';
+    if (id.isEmpty) return;
+    if (_liked) {
+      await _favs.removeFromFavourites(id);
+    } else {
+      await _favs.addToFavourites(id);
+    }
+    if (mounted) setState(() => _liked = !_liked);
   }
 
   @override
@@ -75,10 +95,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       right: 16,
                       child: _circle(
                         _liked ? Icons.favorite : Icons.favorite_border,
-                        () => setState(() {
-                          FavouritesStore.toggle(widget.product);
-                          _liked = !_liked;
-                        }),
+                        _toggleFav,
                         iconColor: _liked
                             ? KanvaColors.pinkFav
                             : KanvaColors.primary,
